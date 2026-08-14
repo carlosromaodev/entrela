@@ -1,0 +1,46 @@
+{
+  "name": "@entrela/backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Backend modular da plataforma Entrela.",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "overrides": {
+    "@esbuild-kit/core-utils": {
+      "esbuild": "0.28.1"
+    }
+  },
+  "scripts": {
+    "desenvolver": "tsx watch src/server.ts",
+    "compilar": "tsc -p tsconfig.compilacao.json",
+    "iniciar": "node dist/src/server.js",
+    "verificar-tipos": "tsc -p tsconfig.json --noEmit",
+    "testar": "vitest run",
+    "testar:cobertura": "vitest run --coverage",
+    "testar:observar": "vitest",
+    "test": "npm run testar",
+    "migracoes:gerar": "drizzle-kit generate",
+    "migracoes:aplicar": "drizzle-kit migrate",
+    "migracoes:verificar": "drizzle-kit check"
+  },
+  "dependencies": {
+    "@fastify/swagger": "9.8.1",
+    "@fastify/swagger-ui": "6.1.1",
+    "drizzle-orm": "0.45.2",
+    "fastify": "5.11.0",
+    "fastify-type-provider-zod": "7.0.0",
+    "pg": "8.22.0",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.2",
+    "@types/pg": "8.20.3",
+    "@vitest/coverage-v8": "4.1.10",
+    "drizzle-kit": "0.31.10",
+    "tsx": "4.23.4",
+    "typescript": "7.0.2",
+    "vitest": "4.1.10"
+  }
+}

@@ -1,0 +1,2 @@
+ALTER TABLE "experiencias" ADD CONSTRAINT "experiencias_versao_de_rascunho_atual_id_versoes_da_experiencia_id_fk" FOREIGN KEY ("versao_de_rascunho_atual_id") REFERENCES "public"."versoes_da_experiencia"("id") ON DELETE restrict ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "experiencias" ADD CONSTRAINT "experiencias_versao_publicada_id_versoes_da_experiencia_id_fk" FOREIGN KEY ("versao_publicada_id") REFERENCES "public"."versoes_da_experiencia"("id") ON DELETE restrict ON UPDATE no action;

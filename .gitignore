@@ -1,0 +1,23 @@
+# Dependências e artefactos gerados
+**/node_modules/
+**/dist/
+**/cobertura/
+**/.vite/
+**/*.tsbuildinfo
+
+# Saídas geradas a partir de configurações TypeScript
+frontend/vite.config.js
+frontend/vite.config.d.ts
+
+# Configuração local e segredos
+**/.env
+**/.env.*
+!**/.env.exemplo
+
+# Relatórios temporários de validação visual
+tmp/
+.superpowers/
+
+# Material local de referência, não pertencente ao produto
+backend/Obsession (2026).mp4
+backend/Obsession (2026).srt
