@@ -400,6 +400,9 @@ describe.skipIf(!urlDeIntegracao)(
             numero: 1,
           },
         })
+        const hmacDaPortaOriginal = createHash('sha256')
+          .update(`revogar:url:${momentoId}`)
+          .digest('hex')
         await repositorio.publicarAtomico({
           abreEm: new Date().toISOString(),
           estadoDaExperiencia: 'PUBLICADA',
@@ -410,9 +413,7 @@ describe.skipIf(!urlDeIntegracao)(
             {
               canalDeOrigem: 'LINK',
               estado: 'ATIVO',
-              hmacDoToken: createHash('sha256')
-                .update(`revogar:url:${momentoId}`)
-                .digest('hex'),
+              hmacDoToken: hmacDaPortaOriginal,
               id: randomUUID(),
               momentoId,
               tipo: 'URL',
@@ -435,21 +436,50 @@ describe.skipIf(!urlDeIntegracao)(
           versaoPublicadaId: versaoId,
         })
 
-        await repositorio.criarNovasPortas(negocioId, [
-          {
-            canalDeOrigem: 'LINK',
-            estado: 'ATIVO',
-            hmacDoToken: createHash('sha256')
-              .update(`regenerado:url:${momentoId}`)
-              .digest('hex'),
-            id: randomUUID(),
-            momentoId,
-            tipo: 'URL',
-            versaoId,
-          },
-        ])
-        await repositorio.revogarPontosAtivos(negocioId, momentoId)
+        await expect(
+          repositorio.substituirPontosDeAcessoAtomico(negocioId, momentoId, [
+            {
+              canalDeOrigem: 'LINK',
+              estado: 'ATIVO',
+              hmacDoToken: hmacDaPortaOriginal,
+              id: randomUUID(),
+              momentoId,
+              tipo: 'URL',
+              versaoId,
+            },
+          ]),
+        ).rejects.toBeDefined()
 
+        const portasDepoisDoRollback = await ligacao.baseDeDados.transaction(
+          async (transacao) => {
+            await transacao.execute(
+              sql`SELECT set_config('app.negocio_id', ${negocioId}, true)`,
+            )
+            return transacao
+              .select({ estado: pontosDeAcesso.estado })
+              .from(pontosDeAcesso)
+              .where(eq(pontosDeAcesso.experienciaId, momentoId))
+          },
+        )
+        expect(portasDepoisDoRollback).toEqual([{ estado: 'ATIVO' }])
+
+        await repositorio.substituirPontosDeAcessoAtomico(
+          negocioId,
+          momentoId,
+          [
+            {
+              canalDeOrigem: 'LINK',
+              estado: 'ATIVO',
+              hmacDoToken: createHash('sha256')
+                .update(`regenerado:url:${momentoId}`)
+                .digest('hex'),
+              id: randomUUID(),
+              momentoId,
+              tipo: 'URL',
+              versaoId,
+            },
+          ],
+        )
         const contagem = await ligacao.baseDeDados.transaction(
           async (transacao) => {
             await transacao.execute(
@@ -462,7 +492,10 @@ describe.skipIf(!urlDeIntegracao)(
           },
         )
         expect(contagem).toHaveLength(2)
-        expect(contagem.every((linha) => linha.estado === 'REVOGADO')).toBe(true)
+        expect(
+          contagem.filter((linha) => linha.estado === 'REVOGADO'),
+        ).toHaveLength(1)
+        expect(contagem.filter((linha) => linha.estado === 'ATIVO')).toHaveLength(1)
       } finally {
         await ligacao.encerrar()
       }

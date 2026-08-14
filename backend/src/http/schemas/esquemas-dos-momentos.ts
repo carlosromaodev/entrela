@@ -99,6 +99,22 @@ export const esquemaDaRespostaDaAtualizacaoDoMomento = z.strictObject({
   metadados: esquemaDosMetadadosHttp,
 })
 
+export const esquemaDaRespostaDaConsultaDoRascunho = z.strictObject({
+  dados: z.strictObject({
+    abertura: esquemaDaAberturaDoMomento,
+    capa: esquemaDaCapaDoMomento.nullable(),
+    estado: z.literal('RASCUNHO'),
+    etapas: z.array(esquemaDaEtapaDoMomento).max(6),
+    idioma: z.enum(['pt-AO', 'en']),
+    modeloEditorial: z.enum(['CARTA_INTIMA', 'MEMORIAS', 'CELEBRACAO']),
+    momentoId: z.uuid(),
+    nomeDoDestinatario: z.string().min(1).max(80).optional(),
+    titulo: z.string().min(1).max(100),
+    versaoId: z.uuid(),
+  }),
+  metadados: esquemaDosMetadadosHttp,
+})
+
 export const esquemaDoCorpoParaRevogarAcesso = z.strictObject({
   acao: z.enum(['REVOGAR', 'REGENERAR']),
 })

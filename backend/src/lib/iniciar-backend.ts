@@ -4,6 +4,7 @@ import { criarAplicacao } from '../app.js'
 import { RepositorioDeMomentosDrizzle } from '../repository/drizzle/repositorio-de-momentos-drizzle.js'
 import { RepositorioEditorialDeMomentosDrizzle } from '../repository/drizzle/repositorio-editorial-de-momentos-drizzle.js'
 import { AtualizarRascunhoDoMomento } from '../service/atualizar-rascunho-do-momento.js'
+import { ConsultarRascunhoDoMomento } from '../service/consultar-rascunho-do-momento.js'
 import { CriarMomento } from '../service/criar-momento.js'
 import { PublicarMomento } from '../service/publicar-momento.js'
 import { RevogarAcessoDoMomento } from '../service/revogar-acesso-do-momento.js'
@@ -39,6 +40,9 @@ export async function iniciarBackend(
   const atualizarRascunhoDoMomento = new AtualizarRascunhoDoMomento({
     repositorio: repositorioEditorial,
   })
+  const consultarRascunhoDoMomento = new ConsultarRascunhoDoMomento({
+    repositorio: repositorioEditorial,
+  })
   const tokenPublico = new TokenPublico({ chaveDeHmac: configuracao.chaveDeHmac })
   const publicarMomento = new PublicarMomento({
     gerarId,
@@ -59,6 +63,7 @@ export async function iniciarBackend(
   const aplicacao = await criarAplicacao({
     aoEncerrar: ligacao.encerrar,
     atualizarRascunhoDoMomento,
+    consultarRascunhoDoMomento,
     configuracao,
     criarMomento,
     publicarMomento,

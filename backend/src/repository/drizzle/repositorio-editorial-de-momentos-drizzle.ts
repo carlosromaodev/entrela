@@ -466,13 +466,17 @@ export class RepositorioEditorialDeMomentosDrizzle
     })
   }
 
-  async revogarPontosAtivos(
+  async substituirPontosDeAcessoAtomico(
     negocioId: string,
     momentoId: string,
+    portas: readonly PontoDeAcessoPublicado[],
   ): Promise<void> {
     await this.baseDeDados.transaction(async (transacao) => {
       await transacao.execute(
         sql`SELECT set_config('app.negocio_id', ${negocioId}, true)`,
+      )
+      await transacao.execute(
+        sql`SELECT id FROM experiencias WHERE id = ${momentoId} AND negocio_id = ${negocioId} FOR UPDATE`,
       )
       await transacao
         .update(pontosDeAcesso)
@@ -483,17 +487,6 @@ export class RepositorioEditorialDeMomentosDrizzle
             eq(pontosDeAcesso.estado, 'ATIVO'),
           ),
         )
-    })
-  }
-
-  async criarNovasPortas(
-    negocioId: string,
-    portas: readonly PontoDeAcessoPublicado[],
-  ): Promise<void> {
-    await this.baseDeDados.transaction(async (transacao) => {
-      await transacao.execute(
-        sql`SELECT set_config('app.negocio_id', ${negocioId}, true)`,
-      )
       for (const porta of portas) {
         await transacao.insert(pontosDeAcesso).values({
           canalDeOrigem: porta.canalDeOrigem,

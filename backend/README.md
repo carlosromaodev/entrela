@@ -4,7 +4,7 @@ Monólito modular da plataforma Entrela, iniciado pelo MVP de Momentos.
 
 ## Estado actual
 
-O MVP de Momentos tem, de ponta a ponta, criar, editar, publicar e catálogo ligados a um PostgreSQL 18 real: `POST /v1/momentos`, `PATCH /v1/momentos/:momentoId` e `POST /v1/momentos/:momentoId/publicacoes` estão implementados com Zod/OpenAPI, sessão assinada, política de acesso, UUIDv7 e RLS provado entre negócios (incluindo nas tabelas de blocos/etapas). Continuam pendentes: a rota pública de abertura/continuação do destinatário, upload de media, recordação e revogação de portas.
+O MVP de Momentos tem, de ponta a ponta, criar, consultar e editar o rascunho, publicar e revogar/regenerar acessos ligados a PostgreSQL: os contratos usam Zod/OpenAPI, sessão assinada, política de acesso, UUIDv7 e RLS provado entre negócios (incluindo tabelas de blocos/etapas). A regeneração substitui portas atomicamente e preserva as anteriores se a criação das novas falhar. Continuam pendentes: a rota pública de abertura/continuação do destinatário, upload de media e recordação.
 
 O histórico verificável está em [implementações](./especificacoes/implementacoes/README.md).
 
@@ -67,8 +67,10 @@ npm run migracoes:verificar
 - `GET /saude` — saúde do processo sem consulta à base de dados;
 - `GET /v1/categorias` — catálogo canónico das submarcas;
 - `POST /v1/momentos` — criação autenticada do rascunho;
+- `GET /v1/momentos/:momentoId` — consulta autenticada da projecção editorial segura do rascunho;
 - `PATCH /v1/momentos/:momentoId` — actualização parcial autenticada do rascunho (título, capa, etapas, abertura, etc.);
 - `POST /v1/momentos/:momentoId/publicacoes` — publicação autenticada do rascunho válido, com portas URL e QR;
+- `POST /v1/momentos/:momentoId/revogacoes-de-acesso` — revogação ou regeneração atómica das portas activas;
 - `GET /documentacao` — Swagger UI;
 - `GET /documentacao/json` — documento OpenAPI 3.1.
 

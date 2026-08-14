@@ -15,6 +15,7 @@ import { registrarRotasDeSaude } from './http/routes/registrar-rotas-de-saude.js
 import type { Configuracao } from './lib/configuracao/carregar-configuracao.js'
 import type { SessaoDoCriador } from './lib/seguranca/sessao-do-criador.js'
 import type { AtualizarRascunhoDoMomento } from './service/atualizar-rascunho-do-momento.js'
+import type { ConsultarRascunhoDoMomento } from './service/consultar-rascunho-do-momento.js'
 import type { CriarMomento } from './service/criar-momento.js'
 import type { PublicarMomento } from './service/publicar-momento.js'
 import type { RevogarAcessoDoMomento } from './service/revogar-acesso-do-momento.js'
@@ -30,6 +31,7 @@ import { VerificarSaudeDoBackend } from './service/verificar-saude-do-backend.js
 type DependenciasDaAplicacao = Readonly<{
   aoEncerrar?: () => Promise<void>
   atualizarRascunhoDoMomento?: AtualizarRascunhoDoMomento
+  consultarRascunhoDoMomento?: ConsultarRascunhoDoMomento
   configuracao: Configuracao
   criarMomento?: CriarMomento
   obterInstanteAtual?: () => Date
@@ -205,6 +207,7 @@ export async function criarAplicacao(
     (dependencias.criarMomento !== undefined ||
       dependencias.publicarMomento !== undefined ||
       dependencias.atualizarRascunhoDoMomento !== undefined ||
+      dependencias.consultarRascunhoDoMomento !== undefined ||
       dependencias.revogarAcessoDoMomento !== undefined)
   ) {
     await registrarRotasDeMomentos(aplicacao, {
@@ -217,6 +220,9 @@ export async function criarAplicacao(
         : {}),
       ...(dependencias.atualizarRascunhoDoMomento !== undefined
         ? { atualizarRascunhoDoMomento: dependencias.atualizarRascunhoDoMomento }
+        : {}),
+      ...(dependencias.consultarRascunhoDoMomento !== undefined
+        ? { consultarRascunhoDoMomento: dependencias.consultarRascunhoDoMomento }
         : {}),
       ...(dependencias.revogarAcessoDoMomento !== undefined
         ? { revogarAcessoDoMomento: dependencias.revogarAcessoDoMomento }

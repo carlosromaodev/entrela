@@ -11,6 +11,7 @@ import { RepositorioDeMomentosEmMemoria } from '../repository/em-memoria/reposit
 import type { RascunhoEditorialDoMomento } from '../repository/contratos/repositorio-de-publicacao-de-momentos.js'
 import { RepositorioDePublicacaoDeMomentosEmMemoria } from '../repository/em-memoria/repositorio-de-publicacao-de-momentos-em-memoria.js'
 import { AtualizarRascunhoDoMomento } from '../service/atualizar-rascunho-do-momento.js'
+import { ConsultarRascunhoDoMomento } from '../service/consultar-rascunho-do-momento.js'
 import { CriarMomento } from '../service/criar-momento.js'
 import { PublicarMomento } from '../service/publicar-momento.js'
 import { RepositorioDeRevogacaoDeMomentosEmMemoria } from '../repository/em-memoria/repositorio-de-revogacao-de-momentos-em-memoria.js'
@@ -19,6 +20,7 @@ import { esquemaDaRespostaDoCatalogoDeCategorias } from './schemas/esquemas-das-
 import {
   esquemaDaRespostaDaAtualizacaoDoMomento,
   esquemaDaRespostaDaCriacaoDoMomento,
+  esquemaDaRespostaDaConsultaDoRascunho,
   esquemaDaRespostaDaPublicacaoDoMomento,
   esquemaDaRespostaDaRevogacaoDoMomento,
 } from './schemas/esquemas-dos-momentos.js'
@@ -145,6 +147,27 @@ function criarDependenciasDaAtualizacao() {
   return { atualizarRascunhoDoMomento, repositorioDePublicacao, sessaoDoCriador, token }
 }
 
+function criarDependenciasDaConsulta() {
+  const repositorioDePublicacao = new RepositorioDePublicacaoDeMomentosEmMemoria()
+  repositorioDePublicacao.adicionarRascunho(criarRascunhoPublicavel())
+  repositorioDePublicacao.definirPapel(negocioId, utilizadorId, 'EDITOR')
+  const consultarRascunhoDoMomento = new ConsultarRascunhoDoMomento({
+    repositorio: repositorioDePublicacao,
+  })
+  const sessaoDoCriador = new SessaoDoCriador({
+    chaveDeSessao: configuracao.chaveDeSessao,
+    obterInstanteAtual: () => new Date('2026-08-02T12:00:00.000Z'),
+  })
+  const token = sessaoDoCriador.emitir({
+    duracaoEmSegundos: 900,
+    negocioId,
+    sessaoId,
+    utilizadorId,
+  })
+
+  return { consultarRascunhoDoMomento, repositorioDePublicacao, sessaoDoCriador, token }
+}
+
 function criarDependenciasDaRevogacao() {
   const repositorioDeRevogacao = new RepositorioDeRevogacaoDeMomentosEmMemoria()
   repositorioDeRevogacao.adicionarExperiencia({
@@ -236,6 +259,20 @@ describe('contrato HTTP da fundação', () => {
       ].schema.properties.dados.properties.estado.enum,
     ).toEqual(['SAUDAVEL'])
     expect(documento.paths['/v1/categorias'].get.tags).toEqual(['Catálogo'])
+
+    const dependenciasDosMomentos = criarDependenciasDaConsulta()
+    await aplicacao.close()
+    aplicacao = await criarAplicacao({
+      configuracao,
+      ...dependenciasDosMomentos,
+    })
+    const documentoComMomentos = (
+      await aplicacao.inject({ method: 'GET', url: '/documentacao/json' })
+    ).json()
+    expect(documentoComMomentos.paths['/v1/momentos/{momentoId}'].get).toMatchObject({
+      security: [{ sessaoDoCriador: [] }],
+      tags: ['Momentos'],
+    })
 
     const interfaceSwagger = await aplicacao.inject({
       method: 'GET',
@@ -468,6 +505,47 @@ describe('contrato HTTP da fundação', () => {
       momentoId,
     )
     expect(rascunho?.titulo).toBe('Título actualizado por HTTP')
+  })
+
+  it('consulta a projecção editorial segura do rascunho autenticado', async () => {
+    const dependencias = criarDependenciasDaConsulta()
+    aplicacao = await criarAplicacao({ configuracao, ...dependencias })
+
+    const resposta = await aplicacao.inject({
+      headers: { authorization: `Bearer ${dependencias.token}` },
+      method: 'GET',
+      url: `/v1/momentos/${momentoId}`,
+    })
+    const corpo = esquemaDaRespostaDaConsultaDoRascunho.parse(resposta.json())
+
+    expect(resposta.statusCode).toBe(200)
+    expect(corpo.dados).toMatchObject({
+      estado: 'RASCUNHO',
+      momentoId,
+      titulo: 'Uma surpresa para ti',
+      versaoId,
+    })
+    expect(corpo.dados.etapas).toHaveLength(1)
+    expect(corpo.dados).not.toHaveProperty('negocioId')
+    expect(corpo.dados).not.toHaveProperty('hmacDoToken')
+  })
+
+  it('recusa consultar rascunho sem sessão ou com identificador inválido', async () => {
+    const dependencias = criarDependenciasDaConsulta()
+    aplicacao = await criarAplicacao({ configuracao, ...dependencias })
+
+    const semSessao = await aplicacao.inject({
+      method: 'GET',
+      url: `/v1/momentos/${momentoId}`,
+    })
+    const identificadorInvalido = await aplicacao.inject({
+      headers: { authorization: `Bearer ${dependencias.token}` },
+      method: 'GET',
+      url: '/v1/momentos/nao-e-uuid',
+    })
+
+    expect(semSessao.statusCode).toBe(401)
+    expect(identificadorInvalido.statusCode).toBe(400)
   })
 
   it('recusa actualizar sem sessão e sem nenhum campo enviado', async () => {

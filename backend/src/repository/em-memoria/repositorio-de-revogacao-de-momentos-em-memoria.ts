@@ -45,13 +45,15 @@ export class RepositorioDeRevogacaoDeMomentosEmMemoria
     this.membros.set(chaveDeMembro(negocioId, utilizadorId), papel)
   }
 
-  async criarNovasPortas(
+  async substituirPontosDeAcessoAtomico(
     _negocioId: string,
+    momentoId: string,
     portas: readonly PontoDeAcessoPublicado[],
   ): Promise<void> {
-    for (const porta of portas) {
-      this.adicionarPortaAtiva(porta)
-    }
+    const existentesRevogados = (this.portas.get(momentoId) ?? []).map(
+      (porta) => ({ ...porta, estado: 'REVOGADO' as const }),
+    )
+    this.portas.set(momentoId, [...existentesRevogados, ...portas])
   }
 
   async obterExperiencia(
@@ -71,16 +73,5 @@ export class RepositorioDeRevogacaoDeMomentosEmMemoria
     utilizadorId: string,
   ): Promise<PapelDoNegocio | null> {
     return this.membros.get(chaveDeMembro(negocioId, utilizadorId)) ?? null
-  }
-
-  async revogarPontosAtivos(
-    _negocioId: string,
-    momentoId: string,
-  ): Promise<void> {
-    const existentes = this.portas.get(momentoId) ?? []
-    this.portas.set(
-      momentoId,
-      existentes.map((porta) => ({ ...porta, estado: 'REVOGADO' as const })),
-    )
   }
 }

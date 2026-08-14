@@ -68,12 +68,12 @@ export class RevogarAcessoDoMomento {
       throw new ErroDeTransicaoDeEstado(experiencia.estado, comando.acao)
     }
 
-    await this.dependencias.repositorio.revogarPontosAtivos(
-      comando.contexto.negocioId,
-      comando.momentoId,
-    )
-
     if (comando.acao === 'REVOGAR') {
+      await this.dependencias.repositorio.substituirPontosDeAcessoAtomico(
+        comando.contexto.negocioId,
+        comando.momentoId,
+        [],
+      )
       return { acao: 'REVOGAR', momentoId: comando.momentoId }
     }
 
@@ -85,8 +85,9 @@ export class RevogarAcessoDoMomento {
     const portaUrl = this.dependencias.tokenPublico.gerar()
     const portaQr = this.dependencias.tokenPublico.gerar()
 
-    await this.dependencias.repositorio.criarNovasPortas(
+    await this.dependencias.repositorio.substituirPontosDeAcessoAtomico(
       comando.contexto.negocioId,
+      comando.momentoId,
       [
         {
           canalDeOrigem: 'LINK',

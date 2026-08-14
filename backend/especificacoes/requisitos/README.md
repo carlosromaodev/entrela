@@ -76,6 +76,7 @@ Em 14 de Agosto de 2026 foram capturados estados públicos do [calendário OpenC
 - [ ] **RF-CNT-10 — Duplicar experiência.** O criador pode duplicar qualquer experiência própria como rascunho novo e independente, sem herdar métricas, acessos ou eventos da original.
 - [ ] **RF-CNT-11 — Modo simples e modo avançado.** O editor oferece um modo guiado por modelo (simples) e um modo de blocos e regras livres (avançado), seleccionável pelo criador sem perder conteúdo ao alternar.
 - [ ] **RF-CNT-12 — Blocos de interacção.** Quando a categoria permitir, o criador adiciona blocos de recolha: formulário, pergunta aberta, escolha múltipla, votação, RSVP, lista de espera, comentários, livro de visitas, envio de media pelo participante, assinatura simples, reacções, chat, perguntas e respostas, mural colaborativo e avaliação da experiência.
+- [x] **RF-CNT-13 — Consultar rascunho editorial.** Um membro autorizado retoma o editor através de uma projecção autenticada com identidade da experiência, versão, título, destinatário opcional, idioma, modelo, capa, etapas e abertura, sem receber tokens, HMAC, portas ou dados de outro negócio. [Evidência](../implementacoes/009-consulta-autenticada-do-rascunho-de-momento.md)
 
 ## Acesso, tempo e interacção
 
@@ -172,6 +173,7 @@ Em 14 de Agosto de 2026 foram capturados estados públicos do [calendário OpenC
 - [ ] **RF-MOM-08 — Estado agregado.** Criador vê primeira abertura, última abertura, conclusão e origem URL/QR sem alegar que a pessoa leu, concordou ou sentiu algo.
 - [ ] **RF-MOM-09 — Recordação.** Criador ou destinatário concluído solicita arquivo HTML/PDF e media autorizada; o processamento é assíncrono e reutiliza pedido equivalente.
 - [ ] **RF-MOM-10 — Evolução posterior.** Mural moderado (com moderação obrigatória antes de publicar, RN-MOM-13), colaboradores, cápsulas de tempo múltiplas (com data de abertura futura inacessível mesmo ao criador, RN-MOM-11), linha do tempo, mapa de memórias e resposta do destinatário entram sem alterar o MVP linear.
+- [x] **RF-MOM-11 — Revogar e regenerar portas.** Criador autorizado revoga todas as portas activas ou troca-as por um novo par URL/QR numa única transacção; falha ao criar a substituição mantém as portas anteriores activas. [Evidência](../implementacoes/008-revogacao-e-regeneracao-atomica-de-acessos.md)
 
 ## Entrela Presentes
 
@@ -466,7 +468,7 @@ Em 14 de Agosto de 2026 foram capturados estados públicos do [calendário OpenC
 - [ ] **RN-MOM-05 — Sem conta.** Destinatário abre por navegador sem conta, e-mail ou telefone.
 - [ ] **RN-MOM-06 — Métrica honesta.** “Aberto” significa gesto humano explícito em sessão válida, não leitura, acordo, emoção ou compreensão.
 - [ ] **RN-MOM-07 — Recordação.** Destinatário só pede recordação depois de concluir; criador pode pedir depois de publicar; dois pedidos equivalentes reutilizam o mesmo trabalho.
-- [ ] **RN-MOM-08 — Regeneração.** Regenerar porta invalida a anterior imediatamente e mantém a experiência publicada.
+- [x] **RN-MOM-08 — Regeneração.** Regenerar porta invalida a anterior imediatamente, cria URL/QR novos na mesma transacção e mantém a experiência publicada; falha intermédia faz rollback integral. [Evidência](../implementacoes/008-revogacao-e-regeneracao-atomica-de-acessos.md)
 - [ ] **RN-MOM-09 — Fora do MVP.** RSVP, NFC, localização, mapas, pagamento entre participantes, ramificação, jogo, mural e editor livre não entram no primeiro corte.
 - [ ] **RN-MOM-10 — Retenção.** Media permanece enquanto o Momento estiver publicado. Após arquivo, entra em janela de recuperação de 90 dias e depois é eliminada, salvo obrigação legal ou exportação já solicitada; o criador e destinatário elegível recebem aviso antes do fim. Rascunho inactivo por 180 dias pode ser eliminado após dois avisos. Custos adicionais nunca reduzem uma janela já prometida sem aviso e opção de exportação.
 - [ ] **RN-MOM-11 — Cápsula do tempo não retroactiva.** Uma cápsula do tempo não pode ter data de abertura no passado no momento da criação; o conteúdo fica inacessível até essa data, mesmo ao próprio criador.

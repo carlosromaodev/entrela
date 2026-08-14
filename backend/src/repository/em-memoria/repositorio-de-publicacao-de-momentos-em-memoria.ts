@@ -8,6 +8,7 @@ import type {
   RepositorioDeEdicaoDeMomentos,
 } from '../contratos/repositorio-de-edicao-de-momentos.js'
 import type { PapelDoNegocio } from '../../service/politica-de-acesso-ao-negocio.js'
+import type { RepositorioDeConsultaDeMomentos } from '../contratos/repositorio-de-consulta-de-momentos.js'
 
 function chaveDeMembro(negocioId: string, utilizadorId: string): string {
   return `${negocioId}:${utilizadorId}`
@@ -18,7 +19,10 @@ function chaveDeDireito(negocioId: string, capacidade: string): string {
 }
 
 export class RepositorioDePublicacaoDeMomentosEmMemoria
-  implements RepositorioDePublicacaoDeMomentos, RepositorioDeEdicaoDeMomentos
+  implements
+    RepositorioDeConsultaDeMomentos,
+    RepositorioDePublicacaoDeMomentos,
+    RepositorioDeEdicaoDeMomentos
 {
   private readonly direitos = new Set<string>()
   private readonly membros = new Map<string, PapelDoNegocio>()

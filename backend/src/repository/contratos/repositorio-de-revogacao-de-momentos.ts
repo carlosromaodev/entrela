@@ -8,8 +8,9 @@ export type ExperienciaPublicavel = Readonly<{
 }>
 
 export interface RepositorioDeRevogacaoDeMomentos {
-  criarNovasPortas(
+  substituirPontosDeAcessoAtomico(
     negocioId: string,
+    momentoId: string,
     portas: readonly PontoDeAcessoPublicado[],
   ): Promise<void>
   obterExperiencia(
@@ -20,5 +21,4 @@ export interface RepositorioDeRevogacaoDeMomentos {
     negocioId: string,
     utilizadorId: string,
   ): Promise<PapelDoNegocio | null>
-  revogarPontosAtivos(negocioId: string, momentoId: string): Promise<void>
 }

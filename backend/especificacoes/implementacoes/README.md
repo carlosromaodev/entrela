@@ -11,6 +11,8 @@ Este índice regista apenas entregas com implementação, testes e evidência. D
 5. [005 — HTTP da publicação de Momentos](./005-http-da-publicacao-de-momentos.md)
 6. [006 — Actualização do rascunho de Momento (PATCH)](./006-atualizacao-do-rascunho-do-momento.md)
 7. [007 — Repositório editorial de Momentos em PostgreSQL real](./007-repositorio-editorial-de-momentos-em-postgresql.md)
+8. [008 — Revogação e regeneração atómica de acessos](./008-revogacao-e-regeneracao-atomica-de-acessos.md)
+9. [009 — Consulta autenticada do rascunho de Momento](./009-consulta-autenticada-do-rascunho-de-momento.md)
 
 ## Regra de estado
 
