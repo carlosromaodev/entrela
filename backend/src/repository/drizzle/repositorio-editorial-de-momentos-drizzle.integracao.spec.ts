@@ -344,6 +344,62 @@ describe.skipIf(!urlDeIntegracao)(
           })
         }
 
+        const hmacDuplicado = createHash('sha256')
+          .update(`rollback:${momentoId}`)
+          .digest('hex')
+        await expect(
+          repositorio.publicarAtomico({
+            abreEm: new Date().toISOString(),
+            estadoDaExperiencia: 'PUBLICADA',
+            estadoDaVersao: 'PUBLICADA',
+            momentoId,
+            negocioId,
+            pontosDeAcesso: [
+              {
+                canalDeOrigem: 'LINK',
+                estado: 'ATIVO',
+                hmacDoToken: hmacDuplicado,
+                id: randomUUID(),
+                momentoId,
+                tipo: 'URL',
+                versaoId,
+              },
+              {
+                canalDeOrigem: 'QR',
+                estado: 'ATIVO',
+                hmacDoToken: hmacDuplicado,
+                id: randomUUID(),
+                momentoId,
+                tipo: 'QR',
+                versaoId,
+              },
+            ],
+            publicadoEm: new Date().toISOString(),
+            somaDeVerificacao: createHash('sha256')
+              .update(`rollback:soma:${momentoId}`)
+              .digest('hex'),
+            versaoId,
+          }),
+        ).rejects.toBeDefined()
+
+        const depoisDoRollback = await repositorio.obterRascunho(
+          negocioId,
+          momentoId,
+        )
+        expect(depoisDoRollback?.estado).toBe('RASCUNHO')
+        const portasDepoisDoRollback = await ligacao.baseDeDados.transaction(
+          async (transacao) => {
+            await transacao.execute(
+              sql`SELECT set_config('app.negocio_id', ${negocioId}, true)`,
+            )
+            return transacao
+              .select({ id: pontosDeAcesso.id })
+              .from(pontosDeAcesso)
+              .where(eq(pontosDeAcesso.experienciaId, momentoId))
+          },
+        )
+        expect(portasDepoisDoRollback).toHaveLength(0)
+
         const resultados = await Promise.allSettled([
           publicacao('A'),
           publicacao('B'),
@@ -359,6 +415,36 @@ describe.skipIf(!urlDeIntegracao)(
           momentoId,
         )
         expect(rascunhoFinal?.estado).toBe('PUBLICADA')
+
+        const portasFinais = await ligacao.baseDeDados.transaction(
+          async (transacao) => {
+            await transacao.execute(
+              sql`SELECT set_config('app.negocio_id', ${negocioId}, true)`,
+            )
+            return transacao
+              .select({
+                estado: pontosDeAcesso.estado,
+                hmac: pontosDeAcesso.hmacDoTokenPublico,
+              })
+              .from(pontosDeAcesso)
+              .where(eq(pontosDeAcesso.experienciaId, momentoId))
+          },
+        )
+        expect(portasFinais).toHaveLength(2)
+        expect(portasFinais.every(({ estado }) => estado === 'ATIVO')).toBe(true)
+        const hmacsFinais = new Set(portasFinais.map(({ hmac }) => hmac))
+        const conjuntoA = new Set([
+          createHash('sha256').update(`A:url:${momentoId}`).digest('hex'),
+          createHash('sha256').update(`A:qr:${momentoId}`).digest('hex'),
+        ])
+        const conjuntoB = new Set([
+          createHash('sha256').update(`B:url:${momentoId}`).digest('hex'),
+          createHash('sha256').update(`B:qr:${momentoId}`).digest('hex'),
+        ])
+        expect(
+          [...hmacsFinais].every((hmac) => conjuntoA.has(hmac)) ||
+            [...hmacsFinais].every((hmac) => conjuntoB.has(hmac)),
+        ).toBe(true)
       } finally {
         await ligacao.encerrar()
       }
@@ -496,6 +582,85 @@ describe.skipIf(!urlDeIntegracao)(
           contagem.filter((linha) => linha.estado === 'REVOGADO'),
         ).toHaveLength(1)
         expect(contagem.filter((linha) => linha.estado === 'ATIVO')).toHaveLength(1)
+
+        function portasDaGeracao(sufixo: string) {
+          return [
+            {
+              canalDeOrigem: 'LINK' as const,
+              estado: 'ATIVO' as const,
+              hmacDoToken: createHash('sha256')
+                .update(`${sufixo}:url:${momentoId}`)
+                .digest('hex'),
+              id: randomUUID(),
+              momentoId,
+              tipo: 'URL' as const,
+              versaoId,
+            },
+            {
+              canalDeOrigem: 'QR' as const,
+              estado: 'ATIVO' as const,
+              hmacDoToken: createHash('sha256')
+                .update(`${sufixo}:qr:${momentoId}`)
+                .digest('hex'),
+              id: randomUUID(),
+              momentoId,
+              tipo: 'QR' as const,
+              versaoId,
+            },
+          ]
+        }
+
+        const geracaoA = portasDaGeracao('concorrente-a')
+        const geracaoB = portasDaGeracao('concorrente-b')
+        const regeneracoes = await Promise.allSettled([
+          repositorio.substituirPontosDeAcessoAtomico(
+            negocioId,
+            momentoId,
+            geracaoA,
+          ),
+          repositorio.substituirPontosDeAcessoAtomico(
+            negocioId,
+            momentoId,
+            geracaoB,
+          ),
+        ])
+        expect(
+          regeneracoes.filter(({ status }) => status === 'fulfilled'),
+        ).toHaveLength(2)
+
+        const portasDepoisDaConcorrencia =
+          await ligacao.baseDeDados.transaction(async (transacao) => {
+            await transacao.execute(
+              sql`SELECT set_config('app.negocio_id', ${negocioId}, true)`,
+            )
+            return transacao
+              .select({
+                estado: pontosDeAcesso.estado,
+                hmac: pontosDeAcesso.hmacDoTokenPublico,
+              })
+              .from(pontosDeAcesso)
+              .where(eq(pontosDeAcesso.experienciaId, momentoId))
+          })
+        const ativas = portasDepoisDaConcorrencia.filter(
+          ({ estado }) => estado === 'ATIVO',
+        )
+        expect(ativas).toHaveLength(2)
+        expect(
+          portasDepoisDaConcorrencia.filter(
+            ({ estado }) => estado === 'REVOGADO',
+          ),
+        ).toHaveLength(4)
+        const hmacsAtivos = new Set(ativas.map(({ hmac }) => hmac))
+        const hmacsDaGeracaoA = new Set(
+          geracaoA.map(({ hmacDoToken }) => hmacDoToken),
+        )
+        const hmacsDaGeracaoB = new Set(
+          geracaoB.map(({ hmacDoToken }) => hmacDoToken),
+        )
+        expect(
+          [...hmacsAtivos].every((hmac) => hmacsDaGeracaoA.has(hmac)) ||
+            [...hmacsAtivos].every((hmac) => hmacsDaGeracaoB.has(hmac)),
+        ).toBe(true)
       } finally {
         await ligacao.encerrar()
       }

@@ -1,0 +1,88 @@
+name: Backend
+
+on:
+  pull_request:
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verificar-backend:
+    name: Tipos, testes, migrações e build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    defaults:
+      run:
+        working-directory: backend
+
+    env:
+      URL_DA_BASE_DE_DADOS: postgresql://entrela:entrela@localhost:5432/entrela
+      URL_DE_BASE_DE_DADOS_DE_INTEGRACAO: postgresql://entrela:entrela@localhost:5432/entrela
+
+    steps:
+      - name: Obter código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+          node-version: 24
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Instalar cliente PostgreSQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
+
+      - name: Criar utilizador não-superuser e base de integração
+        env:
+          PGPASSWORD: postgres
+        run: |
+          psql --host localhost --username postgres --dbname postgres --set ON_ERROR_STOP=1 \
+            --command "CREATE ROLE entrela LOGIN PASSWORD 'entrela' NOSUPERUSER NOCREATEDB NOCREATEROLE;"
+          psql --host localhost --username postgres --dbname postgres --set ON_ERROR_STOP=1 \
+            --command "CREATE DATABASE entrela OWNER entrela;"
+
+      - name: Verificar histórico das migrações
+        run: npm run migracoes:verificar
+
+      - name: Aplicar migrações no PostgreSQL 18
+        run: npm run migracoes:aplicar
+
+      - name: Verificar tipos
+        run: npm run verificar-tipos
+
+      - name: Executar testes unitários e de integração
+        run: npm run testar
+
+      - name: Compilar backend
+        run: npm run compilar

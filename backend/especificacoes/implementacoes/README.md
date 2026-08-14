@@ -13,6 +13,7 @@ Este índice regista apenas entregas com implementação, testes e evidência. D
 7. [007 — Repositório editorial de Momentos em PostgreSQL real](./007-repositorio-editorial-de-momentos-em-postgresql.md)
 8. [008 — Revogação e regeneração atómica de acessos](./008-revogacao-e-regeneracao-atomica-de-acessos.md)
 9. [009 — Consulta autenticada do rascunho de Momento](./009-consulta-autenticada-do-rascunho-de-momento.md)
+10. [010 — Integração contínua com PostgreSQL 18 e invariantes transaccionais](./010-integracao-continua-postgresql-18-e-invariantes-transacionais.md)
 
 ## Regra de estado
 
