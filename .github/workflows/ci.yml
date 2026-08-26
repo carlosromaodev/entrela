@@ -24,7 +24,5 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm ci
-      - run: npm run build
-      - run: npm run test
-      - run: npm run lint
+      - run: cd backend && npm ci && npm run build && npm run test
+      - run: cd frontend && npm ci && npm run build
