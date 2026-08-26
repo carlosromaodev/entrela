@@ -10,14 +10,14 @@ export class StoragePrivadoLocal implements StoragePrivado {
     return `/media/privado/${chave}?exp=${expira}&sig=${sig}`
   }
   verificarUrl(url: string): boolean {
-    const match = url.match(/sig=([A-Za-z0-9_-]+)/)
-    if (!match) return false
-    const sig = match[1]
-    const expMatch = url.match(/exp=(\d+)/)
-    if (!expMatch) return false
-    const expira = parseInt(expMatch[1], 10)
+    const urlObj = new URL(url, 'http://localhost')
+    const sig = urlObj.searchParams.get('sig')
+    const expStr = urlObj.searchParams.get('exp')
+    if (!sig || !expStr) return false
+    const expira = parseInt(expStr, 10)
     if (Date.now() > expira) return false
-    // Verifica assinatura (simplificado para demo)
-    return sig.length > 10
+    const chave = urlObj.pathname.replace('/media/privado/', '')
+    const sigEsperada = createHmac('sha256', SEGREDO).update(chave + ':' + expira).digest('base64url')
+    return sig === sigEsperada
   }
 }

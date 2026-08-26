@@ -2,11 +2,15 @@ import type { FastifyInstance } from 'fastify'
 
 import { criarAplicacao } from '../app.js'
 import { RepositorioDeMomentosDrizzle } from '../repository/drizzle/repositorio-de-momentos-drizzle.js'
+import { RepositorioDeAcessoPublicoAMomentosDrizzle } from '../repository/drizzle/repositorio-de-acesso-publico-a-momentos-drizzle.js'
 import { RepositorioEditorialDeMomentosDrizzle } from '../repository/drizzle/repositorio-editorial-de-momentos-drizzle.js'
 import { AtualizarRascunhoDoMomento } from '../service/atualizar-rascunho-do-momento.js'
+import { AcederMomentoPublico } from '../service/aceder-momento-publico.js'
+import { ContinuarNarrativaDoMomento } from '../service/continuar-narrativa-do-momento.js'
 import { ConsultarRascunhoDoMomento } from '../service/consultar-rascunho-do-momento.js'
 import { CriarMomento } from '../service/criar-momento.js'
 import { PublicarMomento } from '../service/publicar-momento.js'
+import { PreVisualizarMomento } from '../service/pre-visualizar-momento.js'
 import { RevogarAcessoDoMomento } from '../service/revogar-acesso-do-momento.js'
 import { criarBaseDeDados } from './base-de-dados/criar-base-de-dados.js'
 import {
@@ -16,6 +20,8 @@ import {
 import { GeradorDeUuidV7 } from './identificadores/gerador-de-uuid-v7.js'
 import { SessaoDoCriador } from './seguranca/sessao-do-criador.js'
 import { TokenPublico } from './seguranca/token-publico.js'
+import { StoragePrivadoLocal } from './storage-privado-local.js'
+import { RateLimitMemoria } from './rate-limit-memoria.js'
 
 export async function iniciarBackend(
   variaveis: Readonly<Record<string, string | undefined>> = process.env,
@@ -44,11 +50,29 @@ export async function iniciarBackend(
     repositorio: repositorioEditorial,
   })
   const tokenPublico = new TokenPublico({ chaveDeHmac: configuracao.chaveDeHmac })
+  const repositorioPublico = new RepositorioDeAcessoPublicoAMomentosDrizzle(
+    ligacao.baseDeDados,
+  )
+  const acederMomentoPublico = new AcederMomentoPublico({
+    gerarId,
+    obterInstanteAtual: () => new Date(),
+    repositorio: repositorioPublico,
+    tokenPublico,
+  })
+  const continuarNarrativaDoMomento = new ContinuarNarrativaDoMomento({
+    gerarId,
+    obterInstanteAtual: () => new Date(),
+    repositorio: repositorioPublico,
+    tokenPublico,
+  })
   const publicarMomento = new PublicarMomento({
     gerarId,
     obterInstanteAtual: () => new Date(),
     repositorio: repositorioEditorial,
     tokenPublico,
+  })
+  const preVisualizarMomento = new PreVisualizarMomento({
+    repositorio: repositorioEditorial,
   })
   const revogarAcessoDoMomento = new RevogarAcessoDoMomento({
     gerarId,
@@ -61,12 +85,15 @@ export async function iniciarBackend(
     obterInstanteAtual: () => new Date(),
   })
   const aplicacao = await criarAplicacao({
+    acederMomentoPublico,
+    continuarNarrativaDoMomento,
     aoEncerrar: ligacao.encerrar,
     atualizarRascunhoDoMomento,
     consultarRascunhoDoMomento,
     configuracao,
     criarMomento,
     publicarMomento,
+    preVisualizarMomento,
     revogarAcessoDoMomento,
     sessaoDoCriador,
   })

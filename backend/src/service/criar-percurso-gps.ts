@@ -7,7 +7,6 @@ const esquemaParagem = z.strictObject({
   latitude: z.number(),
   longitude: z.number(),
   raioProximidadeMetros: z.number().int().positive().default(50),
-  conteudoBlocoId: z.string().uuid().optional(),
 })
 
 const esquemaParaCriarPercursoGPS = z.strictObject({
@@ -24,7 +23,7 @@ const esquemaParaCriarPercursoGPS = z.strictObject({
 })
 
 export class CriarPercursoGPS {
-  constructor(private readonly d: any) {}
+  constructor(private readonly d: { repositorio: import('../repository/contratos/repositorio-de-percursos.js').RepositorioDePercursos }) {}
 
   async executar(e: unknown) {
     const entrada = validarEntrada(esquemaParaCriarPercursoGPS, e)
