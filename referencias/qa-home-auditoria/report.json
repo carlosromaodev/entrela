@@ -1,0 +1,362 @@
+{
+  "url": "http://127.0.0.1:5174",
+  "generatedAt": "2026-08-27T12:21:35.487Z",
+  "pages": [
+    {
+      "name": "home",
+      "path": "/",
+      "profiles": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 1440,
+            "viewportWidth": 1440,
+            "pageHeight": 1885,
+            "main": {
+              "x": 0,
+              "y": 0,
+              "width": 1440,
+              "height": 1780,
+              "top": 0,
+              "right": 1440,
+              "bottom": 1780,
+              "left": 0
+            },
+            "hero": {
+              "x": 0,
+              "y": 0,
+              "width": 1440,
+              "height": 1000,
+              "top": 0,
+              "right": 1440,
+              "bottom": 1000,
+              "left": 0
+            },
+            "heroContent": {
+              "x": 270,
+              "y": 202.21875,
+              "width": 900,
+              "height": 555.5625,
+              "top": 202.21875,
+              "right": 1170,
+              "bottom": 757.78125,
+              "left": 270
+            },
+            "authCard": null,
+            "headerBrand": {
+              "x": 26,
+              "y": 16,
+              "width": 115.375,
+              "height": 42,
+              "top": 16,
+              "right": 141.375,
+              "bottom": 58,
+              "left": 26
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "closing": {
+            "visible": true,
+            "titleOpacity": "0.999698"
+          },
+          "visualThemes": [
+            {
+              "name": "celebrar",
+              "selector": ".hero-example--celebrar",
+              "word": "momento",
+              "heroClass": "hero hero--visual-active hero--theme-celebrar",
+              "visibleCards": 11
+            },
+            {
+              "name": "surpreender",
+              "selector": ".hero-example--surpreender",
+              "word": "presente",
+              "heroClass": "hero hero--visual-active hero--theme-surpreender",
+              "visibleCards": 11
+            },
+            {
+              "name": "convidar",
+              "selector": ".hero-example--convidar",
+              "word": "convite",
+              "heroClass": "hero hero--visual-active hero--theme-convidar",
+              "visibleCards": 11
+            }
+          ]
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 768,
+            "viewportWidth": 768,
+            "pageHeight": 1973,
+            "main": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 1822.71875,
+              "top": 0,
+              "right": 768,
+              "bottom": 1822.71875,
+              "left": 0
+            },
+            "hero": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 1024,
+              "top": 0,
+              "right": 768,
+              "bottom": 1024,
+              "left": 0
+            },
+            "heroContent": {
+              "x": 24,
+              "y": 248.8671875,
+              "width": 720,
+              "height": 485.296875,
+              "top": 248.8671875,
+              "right": 744,
+              "bottom": 734.1640625,
+              "left": 24
+            },
+            "authCard": null,
+            "headerBrand": {
+              "x": 26,
+              "y": 16,
+              "width": 115.375,
+              "height": 42,
+              "top": 16,
+              "right": 141.375,
+              "bottom": 58,
+              "left": 26
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "closing": {
+            "visible": true,
+            "titleOpacity": "0.99928"
+          }
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 390,
+            "viewportWidth": 390,
+            "pageHeight": 1617,
+            "main": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 1419.671875,
+              "top": 0,
+              "right": 390,
+              "bottom": 1419.671875,
+              "left": 0
+            },
+            "hero": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 812,
+              "top": 0,
+              "right": 390,
+              "bottom": 812,
+              "left": 0
+            },
+            "heroContent": {
+              "x": 14,
+              "y": 78,
+              "width": 362,
+              "height": 384.90625,
+              "top": 78,
+              "right": 376,
+              "bottom": 462.90625,
+              "left": 14
+            },
+            "authCard": null,
+            "headerBrand": {
+              "x": 14,
+              "y": 12,
+              "width": 101.78125,
+              "height": 40,
+              "top": 12,
+              "right": 115.78125,
+              "bottom": 52,
+              "left": 14
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "closing": {
+            "visible": true,
+            "titleOpacity": "1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "path": "/entrar",
+      "profiles": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 1440,
+            "viewportWidth": 1440,
+            "pageHeight": 1000,
+            "main": {
+              "x": 0,
+              "y": 0,
+              "width": 1440,
+              "height": 1000,
+              "top": 0,
+              "right": 1440,
+              "bottom": 1000,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": {
+              "x": 540,
+              "y": 192,
+              "width": 360,
+              "height": 442,
+              "top": 192,
+              "right": 900,
+              "bottom": 634,
+              "left": 540
+            },
+            "headerBrand": {
+              "x": 26,
+              "y": 16,
+              "width": 115.375,
+              "height": 42,
+              "top": 16,
+              "right": 141.375,
+              "bottom": 58,
+              "left": 26
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": []
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 768,
+            "viewportWidth": 768,
+            "pageHeight": 1024,
+            "main": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 1024,
+              "top": 0,
+              "right": 768,
+              "bottom": 1024,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": {
+              "x": 204,
+              "y": 192,
+              "width": 360,
+              "height": 442,
+              "top": 192,
+              "right": 564,
+              "bottom": 634,
+              "left": 204
+            },
+            "headerBrand": {
+              "x": 26,
+              "y": 16,
+              "width": 115.375,
+              "height": 42,
+              "top": 16,
+              "right": 141.375,
+              "bottom": 58,
+              "left": 26
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": []
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 390,
+            "viewportWidth": 390,
+            "pageHeight": 844,
+            "main": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 844,
+              "top": 0,
+              "right": 390,
+              "bottom": 844,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": {
+              "x": 16,
+              "y": 94,
+              "width": 358,
+              "height": 442,
+              "top": 94,
+              "right": 374,
+              "bottom": 536,
+              "left": 16
+            },
+            "headerBrand": {
+              "x": 14,
+              "y": 12,
+              "width": 101.78125,
+              "height": 40,
+              "top": 12,
+              "right": 115.78125,
+              "bottom": 52,
+              "left": 14
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "chat.tools.terminal.autoApprove": {
+    "npm run testar": true,
+    "npm run test": true,
+    "/^sudo -u postgres psql -c \"CREATE DATABASE entrela;\" 2>/dev/null \\|\\| echo \"DB já existe ou erro\"; sudo -u postgres psql -l \\| grep entrela$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  }
+}

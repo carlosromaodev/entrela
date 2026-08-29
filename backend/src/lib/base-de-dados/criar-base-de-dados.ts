@@ -8,6 +8,7 @@ export type BaseDeDados = NodePgDatabase<typeof esquema>
 export type LigacaoComBaseDeDados = Readonly<{
   baseDeDados: BaseDeDados
   encerrar: () => Promise<void>
+  pool: Pool
 }>
 
 export function criarBaseDeDados(urlDaBaseDeDados: string): LigacaoComBaseDeDados {
@@ -24,5 +25,6 @@ export function criarBaseDeDados(urlDaBaseDeDados: string): LigacaoComBaseDeDado
   return {
     baseDeDados,
     encerrar: async () => pool.end(),
+    pool,
   }
 }

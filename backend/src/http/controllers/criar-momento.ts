@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import type { z } from 'zod'
 
-import type { SessaoDoCriador } from '../../lib/seguranca/sessao-do-criador.js'
+import { pedidoDeSessao, type ResolvedorDeSessaoDoCriador } from '../../identidade/autenticacao/resolvedor-de-sessao.js'
 import type { CriarMomento } from '../../service/criar-momento.js'
 import type { esquemaDoCorpoParaCriarMomento } from '../schemas/esquemas-dos-momentos.js'
 
@@ -11,10 +11,12 @@ type RequisicaoDeCriacao = FastifyRequest<{
 
 export function criarControladorDeCriacaoDoMomento(
   criarMomento: CriarMomento,
-  sessaoDoCriador: SessaoDoCriador,
+  sessaoDoCriador: ResolvedorDeSessaoDoCriador,
 ) {
   return async (requisicao: RequisicaoDeCriacao, resposta: FastifyReply) => {
-    const sessao = sessaoDoCriador.validar(requisicao.headers.authorization)
+    const sessao = await sessaoDoCriador.resolver(
+      pedidoDeSessao(requisicao.headers, true),
+    )
     const resultado = await criarMomento.executar({
       contexto: {
         negocioId: sessao.negocioId,

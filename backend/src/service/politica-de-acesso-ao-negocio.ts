@@ -23,6 +23,8 @@ const acoesConhecidas = [
   'VER_ANALISES',
   'GERIR_FATURACAO',
   'VER_CONTEUDO_PRIVADO',
+  'CRIAR_CONVITE',
+  'CONFIRMAR_PRESENCA',
 ] as const
 
 export type AcaoNoNegocio = (typeof acoesConhecidas)[number]
@@ -40,6 +42,8 @@ const permissoes: Readonly<Record<PapelDoNegocio, ReadonlySet<AcaoNoNegocio>>> =
     'ARQUIVAR_EXPERIENCIA',
     'REVOGAR_ACESSO',
     'VER_CONTEUDO_PRIVADO',
+    'CRIAR_CONVITE',
+    'CONFIRMAR_PRESENCA',
   ]),
   FATURACAO: new Set(['GERIR_FATURACAO']),
   OPERADOR: new Set(['OPERAR_EVENTO']),

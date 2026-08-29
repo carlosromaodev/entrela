@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import type { z } from 'zod'
 
-import type { SessaoDoCriador } from '../../lib/seguranca/sessao-do-criador.js'
+import { pedidoDeSessao, type ResolvedorDeSessaoDoCriador } from '../../identidade/autenticacao/resolvedor-de-sessao.js'
 import type { RevogarAcessoDoMomento } from '../../service/revogar-acesso-do-momento.js'
 import type { esquemaDoCorpoParaRevogarAcesso } from '../schemas/esquemas-dos-momentos.js'
 import type { esquemaDosParametrosDoMomento } from '../schemas/esquemas-dos-momentos.js'
@@ -13,13 +13,15 @@ type RequisicaoDeRevogacao = FastifyRequest<{
 
 export function criarControladorDeRevogacaoDoMomento(
   revogarAcessoDoMomento: RevogarAcessoDoMomento,
-  sessaoDoCriador: SessaoDoCriador,
+  sessaoDoCriador: ResolvedorDeSessaoDoCriador,
 ) {
   return async (
     requisicao: RequisicaoDeRevogacao,
     resposta: FastifyReply,
   ) => {
-    const sessao = sessaoDoCriador.validar(requisicao.headers.authorization)
+    const sessao = await sessaoDoCriador.resolver(
+      pedidoDeSessao(requisicao.headers, true),
+    )
     const resultado = await revogarAcessoDoMomento.executar({
       acao: requisicao.body.acao,
       contexto: {

@@ -19,6 +19,7 @@ export class EnviarMensagemAgradecimento {
     const progresso = await this.d.repositorio.obterProgresso(dados.participanteId, dados.experienciaId)
     if (!progresso || !progresso.concluido) throw new Error('Participante ainda não concluiu.')
     return this.d.repositorio.registrarMensagem({
+      negocioId: contexto.negocioId,
       experienciaId: dados.experienciaId,
       participanteId: dados.participanteId,
       mensagem: dados.mensagem,

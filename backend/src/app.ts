@@ -10,16 +10,25 @@ import {
 } from 'fastify-type-provider-zod'
 
 import { registrarRotasDeCategorias } from './http/routes/registrar-rotas-de-categorias.js'
+import { registrarRotasDeAcessoPublico } from './http/routes/registrar-rotas-de-acesso-publico.js'
 import { registrarRotasDeMomentos } from './http/routes/registrar-rotas-de-momentos.js'
 import { registrarRotasDeSaude } from './http/routes/registrar-rotas-de-saude.js'
+import { registrarHttpDeMedia, type DependenciasHttpDeMedia } from './media/http.js'
+import { ArmazenamentoLocalPrivado, registrarHttpDoArmazenamentoLocal } from './media/armazenamento-local-privado.js'
+import type { RateLimit } from './lib/rate-limit.js'
 import type { Configuracao } from './lib/configuracao/carregar-configuracao.js'
 import type { SessaoDoCriador } from './lib/seguranca/sessao-do-criador.js'
 import type { AtualizarRascunhoDoMomento } from './service/atualizar-rascunho-do-momento.js'
+import type { AcederMomentoPublico } from './service/aceder-momento-publico.js'
+import type { ContinuarNarrativaDoMomento } from './service/continuar-narrativa-do-momento.js'
+import { ErroDeContinuacaoDoMomento } from './service/errs/ErroDeContinuacaoDoMomento.js'
 import type { ConsultarRascunhoDoMomento } from './service/consultar-rascunho-do-momento.js'
 import type { CriarMomento } from './service/criar-momento.js'
 import type { PublicarMomento } from './service/publicar-momento.js'
+import type { PreVisualizarMomento } from './service/pre-visualizar-momento.js'
 import type { RevogarAcessoDoMomento } from './service/revogar-acesso-do-momento.js'
 import { ErroDeAcessoAoNegocio } from './service/errs/ErroDeAcessoAoNegocio.js'
+import { ErroDeAcessoPublico } from './service/errs/ErroDeAcessoPublico.js'
 import { ErroDeAutenticacao } from './service/errs/ErroDeAutenticacao.js'
 import { ErroDeDireitoInativo } from './service/errs/ErroDeDireitoInativo.js'
 import { ErroDePublicacaoDoMomento } from './service/errs/ErroDePublicacaoDoMomento.js'
@@ -29,6 +38,8 @@ import { ObterCatalogoDeCategorias } from './service/obter-catalogo-de-categoria
 import { VerificarSaudeDoBackend } from './service/verificar-saude-do-backend.js'
 
 type DependenciasDaAplicacao = Readonly<{
+  acederMomentoPublico?: AcederMomentoPublico
+  continuarNarrativaDoMomento?: ContinuarNarrativaDoMomento
   aoEncerrar?: () => Promise<void>
   atualizarRascunhoDoMomento?: AtualizarRascunhoDoMomento
   consultarRascunhoDoMomento?: ConsultarRascunhoDoMomento
@@ -36,6 +47,10 @@ type DependenciasDaAplicacao = Readonly<{
   criarMomento?: CriarMomento
   obterInstanteAtual?: () => Date
   publicarMomento?: PublicarMomento
+  preVisualizarMomento?: PreVisualizarMomento
+  media?: DependenciasHttpDeMedia
+  armazenamentoLocalDeMedia?: ArmazenamentoLocalPrivado
+  limiteDeMedia?: Readonly<{ janelaEmSegundos: number; maximoPorIp: number; rateLimit: RateLimit }>
   revogarAcessoDoMomento?: RevogarAcessoDoMomento
   sessaoDoCriador?: SessaoDoCriador
 }>
@@ -150,12 +165,15 @@ export async function criarAplicacao(
     const estadoHttp =
       validacaoFalhou || validacaoDoCasoDeUso
         ? 400
+        : erro instanceof ErroDeAcessoPublico
+          ? 404
         : erro instanceof ErroDeAutenticacao
           ? 401
           : erro instanceof ErroDeAcessoAoNegocio ||
               erro instanceof ErroDeDireitoInativo
             ? 403
-            : erro instanceof ErroDeTransicaoDeEstado
+            : erro instanceof ErroDeTransicaoDeEstado ||
+                erro instanceof ErroDeContinuacaoDoMomento
               ? 409
               : erro instanceof ErroDePublicacaoDoMomento
                 ? 422
@@ -202,10 +220,30 @@ export async function criarAplicacao(
   await registrarRotasDeCategorias(aplicacao, {
     obterCatalogoDeCategorias,
   })
+  if (dependencias.media !== undefined) {
+    await registrarHttpDeMedia(aplicacao, dependencias.media)
+  }
+  if (dependencias.armazenamentoLocalDeMedia !== undefined) {
+    await registrarHttpDoArmazenamentoLocal(
+      aplicacao,
+      dependencias.armazenamentoLocalDeMedia,
+      dependencias.limiteDeMedia,
+    )
+  }
+  if (dependencias.acederMomentoPublico !== undefined) {
+    await registrarRotasDeAcessoPublico(aplicacao, {
+      acederMomentoPublico: dependencias.acederMomentoPublico,
+      configuracao: dependencias.configuracao,
+      ...(dependencias.continuarNarrativaDoMomento === undefined
+        ? {}
+        : { continuarNarrativaDoMomento: dependencias.continuarNarrativaDoMomento }),
+    })
+  }
   if (
     dependencias.sessaoDoCriador !== undefined &&
     (dependencias.criarMomento !== undefined ||
       dependencias.publicarMomento !== undefined ||
+      dependencias.preVisualizarMomento !== undefined ||
       dependencias.atualizarRascunhoDoMomento !== undefined ||
       dependencias.consultarRascunhoDoMomento !== undefined ||
       dependencias.revogarAcessoDoMomento !== undefined)
@@ -217,6 +255,9 @@ export async function criarAplicacao(
         : {}),
       ...(dependencias.publicarMomento !== undefined
         ? { publicarMomento: dependencias.publicarMomento }
+        : {}),
+      ...(dependencias.preVisualizarMomento !== undefined
+        ? { preVisualizarMomento: dependencias.preVisualizarMomento }
         : {}),
       ...(dependencias.atualizarRascunhoDoMomento !== undefined
         ? { atualizarRascunhoDoMomento: dependencias.atualizarRascunhoDoMomento }

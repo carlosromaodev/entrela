@@ -30,7 +30,10 @@ describe('carregarConfiguracao', () => {
     const configuracao = carregarConfiguracao({
       AMBIENTE: 'teste',
       CHAVE_DE_HMAC: 'uma-chave-de-teste-com-pelo-menos-32-caracteres',
+      CHAVE_DE_MEDIA: 'outra-chave-de-media-com-pelo-menos-32-caracteres',
       CHAVE_DE_SESSAO: 'outra-chave-exclusiva-para-assinar-sessoes-de-teste',
+      DIRETORIO_DE_MEDIA: '/tmp/entrela-media-teste',
+      ORIGEM_PUBLICA: 'http://localhost:4545',
       PORTA: '4545',
       URL_DA_BASE_DE_DADOS: 'postgresql://entrela:entrela@localhost:5432/entrela',
       VERSAO_DA_APLICACAO: '1.2.3',
@@ -39,9 +42,12 @@ describe('carregarConfiguracao', () => {
     expect(configuracao).toEqual({
       ambiente: 'teste',
       chaveDeHmac: 'uma-chave-de-teste-com-pelo-menos-32-caracteres',
+      chaveDeMedia: 'outra-chave-de-media-com-pelo-menos-32-caracteres',
       chaveDeSessao: 'outra-chave-exclusiva-para-assinar-sessoes-de-teste',
+      diretorioDeMedia: '/tmp/entrela-media-teste',
       hospede: '0.0.0.0',
       nivelDeLog: 'silent',
+      origemPublica: 'http://localhost:4545',
       porta: 4545,
       urlDaBaseDeDados: 'postgresql://entrela:entrela@localhost:5432/entrela',
       versaoDaAplicacao: '1.2.3',

@@ -1,6 +1,8 @@
 import { sql } from 'drizzle-orm'
 import {
   type AnyPgColumn,
+  bigint,
+  bigserial,
   char,
   check,
   index,
@@ -168,6 +170,127 @@ export const membrosDoNegocio = pgTable(
   ],
 )
 
+export const desafiosDeAutenticacao = pgTable(
+  'desafios_de_autenticacao',
+  {
+    consumidoEm: timestamp('consumido_em', { mode: 'date', withTimezone: true }),
+    criadoEm: instanteDeCriacao(),
+    emailNormalizado: text('email_normalizado').notNull(),
+    expiraEm: timestamp('expira_em', { mode: 'date', withTimezone: true }).notNull(),
+    hmacToken: char('hmac_token', { length: 64 }).notNull(),
+    id: uuid('id').primaryKey(),
+  },
+  (tabela) => [
+    uniqueIndex('desafios_de_autenticacao_hmac_unico').on(tabela.hmacToken),
+    index('desafios_de_autenticacao_por_email').on(
+      tabela.emailNormalizado,
+      tabela.criadoEm,
+    ),
+    index('desafios_de_autenticacao_por_expiracao').on(tabela.expiraEm),
+  ],
+)
+
+export const contasPessoais = pgTable('contas_pessoais', {
+  criadoEm: instanteDeCriacao(),
+  negocioId: uuid('negocio_id')
+    .notNull()
+    .unique()
+    .references(() => negocios.id, { onDelete: 'restrict' }),
+  utilizadorId: uuid('utilizador_id')
+    .primaryKey()
+    .references(() => utilizadores.id, { onDelete: 'restrict' }),
+})
+
+export const sessoesDoCriador = pgTable(
+  'sessoes_do_criador',
+  {
+    criadoEm: instanteDeCriacao(),
+    expiraEm: timestamp('expira_em', { mode: 'date', withTimezone: true }).notNull(),
+    hmacCsrf: char('hmac_csrf', { length: 64 }).notNull(),
+    hmacToken: char('hmac_token', { length: 64 }).notNull(),
+    id: uuid('id').primaryKey(),
+    negocioId: uuid('negocio_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+    revogadaEm: timestamp('revogada_em', { mode: 'date', withTimezone: true }),
+    substituidaPorId: uuid('substituida_por_id').references(
+      (): AnyPgColumn => sessoesDoCriador.id,
+      { onDelete: 'restrict' },
+    ),
+    utilizadorId: uuid('utilizador_id')
+      .notNull()
+      .references(() => utilizadores.id, { onDelete: 'restrict' }),
+  },
+  (tabela) => [
+    uniqueIndex('sessoes_do_criador_hmac_unico').on(tabela.hmacToken),
+    index('sessoes_do_criador_por_utilizador').on(
+      tabela.utilizadorId,
+      tabela.expiraEm,
+    ),
+  ],
+)
+
+export const convitesDeMembro = pgTable(
+  'convites_de_membro',
+  {
+    aceiteEm: timestamp('aceite_em', { mode: 'date', withTimezone: true }),
+    criadoEm: instanteDeCriacao(),
+    emailNormalizado: text('email_normalizado').notNull(),
+    estado: varchar('estado', { length: 16 }).default('PENDENTE').notNull(),
+    expiraEm: timestamp('expira_em', { mode: 'date', withTimezone: true }).notNull(),
+    id: uuid('id').primaryKey(),
+    negocioId: uuid('negocio_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+    papel: papelDoMembro('papel').notNull(),
+    revogadoEm: timestamp('revogado_em', { mode: 'date', withTimezone: true }),
+  },
+  (tabela) => [
+    check(
+      'convites_de_membro_estado_valido',
+      sql`${tabela.estado} IN ('PENDENTE', 'ACEITE', 'REVOGADO', 'EXPIRADO')`,
+    ),
+    check('convites_de_membro_sem_proprietario', sql`${tabela.papel} <> 'PROPRIETARIO'`),
+    uniqueIndex('convites_de_membro_pendente_unico')
+      .on(tabela.negocioId, tabela.emailNormalizado)
+      .where(sql`${tabela.estado} = 'PENDENTE'`),
+  ],
+)
+
+export const relacoesEntreNegocios = pgTable(
+  'relacoes_entre_negocios',
+  {
+    beneficiarioId: uuid('beneficiario_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+    concedenteId: uuid('concedente_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+    criadoEm: instanteDeCriacao(),
+    estado: varchar('estado', { length: 12 }).default('ATIVA').notNull(),
+    id: uuid('id').primaryKey(),
+    revogadaEm: timestamp('revogada_em', { mode: 'date', withTimezone: true }),
+    tipo: varchar('tipo', { length: 32 }).notNull(),
+  },
+  (tabela) => [
+    check(
+      'relacoes_entre_negocios_distintas',
+      sql`${tabela.concedenteId} <> ${tabela.beneficiarioId}`,
+    ),
+    check(
+      'relacoes_entre_negocios_tipo_valido',
+      sql`${tabela.tipo} IN ('AGENCIA_CLIENTE', 'PARCEIRO_CLIENTE')`,
+    ),
+    check(
+      'relacoes_entre_negocios_estado_valido',
+      sql`${tabela.estado} IN ('ATIVA', 'REVOGADA')`,
+    ),
+    uniqueIndex('relacoes_entre_negocios_ativa_unica')
+      .on(tabela.concedenteId, tabela.beneficiarioId, tabela.tipo)
+      .where(sql`${tabela.estado} = 'ATIVA'`),
+  ],
+)
+
 export const experiencias = pgTable(
   'experiencias',
   {
@@ -240,6 +363,43 @@ export const versoesDaExperiencia = pgTable(
   ],
 )
 
+export const relacoesEntreExperiencias = pgTable(
+  'relacoes_entre_experiencias',
+  {
+    criadoEm: instanteDeCriacao(),
+    experienciaDestinoId: uuid('experiencia_destino_id')
+      .notNull()
+      .references(() => experiencias.id, { onDelete: 'restrict' }),
+    experienciaOrigemId: uuid('experiencia_origem_id')
+      .notNull()
+      .references(() => experiencias.id, { onDelete: 'restrict' }),
+    id: uuid('id').primaryKey(),
+    negocioId: uuid('negocio_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+    revogadaEm: timestamp('revogada_em', { mode: 'date', withTimezone: true }),
+    tipo: varchar('tipo', { length: 24 }).notNull(),
+  },
+  (tabela) => [
+    check(
+      'relacoes_entre_experiencias_distintas',
+      sql`${tabela.experienciaOrigemId} <> ${tabela.experienciaDestinoId}`,
+    ),
+    check(
+      'relacoes_entre_experiencias_tipo_valido',
+      sql`${tabela.tipo} IN ('ORIGINA', 'COMPLEMENTA', 'CONTINUA', 'SUBSTITUI')`,
+    ),
+    unique(
+      'relacoes_entre_experiencias_origem_destino_tipo_unico',
+    ).on(
+      tabela.experienciaOrigemId,
+      tabela.experienciaDestinoId,
+      tabela.tipo,
+    ),
+    index('relacoes_entre_experiencias_por_negocio').on(tabela.negocioId),
+  ],
+)
+
 export const traducoesDaExperiencia = pgTable(
   'traducoes_da_experiencia',
   {
@@ -305,6 +465,110 @@ export const traducoesDoBloco = pgTable(
     idioma: codigoDeIdioma('idioma').notNull(),
   },
   (tabela) => [primaryKey({ columns: [tabela.blocoId, tabela.idioma] })],
+)
+
+export const ficheiros = pgTable(
+  'ficheiros',
+  {
+    altura: integer('altura'),
+    atualizadoEm: instanteDeAtualizacao(),
+    criadoEm: instanteDeCriacao(),
+    criadoPorUtilizadorId: uuid('criado_por_utilizador_id')
+      .notNull()
+      .references(() => utilizadores.id, { onDelete: 'restrict' }),
+    duracaoEmMilissegundos: bigint('duracao_em_milissegundos', {
+      mode: 'number',
+    }),
+    estado: varchar('estado', { length: 16 }).default('PENDENTE').notNull(),
+    experienciaId: uuid('experiencia_id')
+      .notNull()
+      .references(() => experiencias.id, { onDelete: 'restrict' }),
+    id: uuid('id').primaryKey(),
+    largura: integer('largura'),
+    mimeDeclarado: varchar('mime_declarado', { length: 100 }).notNull(),
+    mimeDetetado: varchar('mime_detetado', { length: 100 }),
+    negocioId: uuid('negocio_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+    objectoOriginal: text('objecto_original').notNull(),
+    objectoSeguro: text('objecto_seguro'),
+    problemaTecnico: varchar('problema_tecnico', { length: 80 }),
+    somaSha256: char('soma_sha256', { length: 64 }),
+    tamanhoDeclarado: bigint('tamanho_declarado', { mode: 'number' }).notNull(),
+    tamanhoVerificado: bigint('tamanho_verificado', { mode: 'number' }),
+    tipo: varchar('tipo', { length: 16 }).notNull(),
+  },
+  (tabela) => [
+    check(
+      'ficheiros_tipo_valido',
+      sql`${tabela.tipo} IN ('AUDIO', 'IMAGEM', 'VIDEO')`,
+    ),
+    check(
+      'ficheiros_estado_valido',
+      sql`${tabela.estado} IN ('PENDENTE', 'PROCESSANDO', 'PRONTO', 'FALHOU')`,
+    ),
+    check('ficheiros_tamanho_positivo', sql`${tabela.tamanhoDeclarado} > 0`),
+    unique('ficheiros_objecto_original_unico').on(
+      tabela.negocioId,
+      tabela.objectoOriginal,
+    ),
+    index('ficheiros_por_experiencia_e_estado').on(
+      tabela.negocioId,
+      tabela.experienciaId,
+      tabela.estado,
+    ),
+  ],
+)
+
+export const ficheirosDoBloco = pgTable(
+  'ficheiros_do_bloco',
+  {
+    blocoId: uuid('bloco_id')
+      .notNull()
+      .references(() => blocos.id, { onDelete: 'restrict' }),
+    ficheiroId: uuid('ficheiro_id')
+      .notNull()
+      .references(() => ficheiros.id, { onDelete: 'restrict' }),
+    negocioId: uuid('negocio_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+  },
+  (tabela) => [
+    primaryKey({ columns: [tabela.blocoId, tabela.ficheiroId] }),
+    index('ficheiros_do_bloco_por_negocio').on(tabela.negocioId),
+  ],
+)
+
+export const trabalhosDeMedia = pgTable(
+  'trabalhos_de_media',
+  {
+    criadoEm: instanteDeCriacao(),
+    donoDoLease: varchar('dono_do_lease', { length: 128 }),
+    estado: varchar('estado', { length: 16 }).default('PENDENTE').notNull(),
+    ficheiroId: uuid('ficheiro_id')
+      .notNull()
+      .references(() => ficheiros.id, { onDelete: 'restrict' }),
+    id: bigserial('id', { mode: 'number' }).primaryKey(),
+    leaseExpiraEm: timestamp('lease_expira_em', {
+      mode: 'date',
+      withTimezone: true,
+    }),
+    negocioId: uuid('negocio_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+    tipo: varchar('tipo', { length: 40 }).notNull(),
+  },
+  (tabela) => [
+    unique('trabalhos_de_media_ficheiro_tipo_unico').on(
+      tabela.ficheiroId,
+      tabela.tipo,
+    ),
+    index('trabalhos_de_media_pendentes').on(
+      tabela.negocioId,
+      tabela.estado,
+      tabela.criadoEm,
+    ),
+  ],
 )
 
 export const politicasDeDisponibilidade = pgTable(
@@ -396,6 +660,30 @@ export const sessoesDeInteracao = pgTable(
     index('sessoes_de_interacao_por_experiencia').on(
       tabela.experienciaId,
       tabela.estado,
+    ),
+    uniqueIndex('sessoes_de_interacao_ponto_anonimo_unico').on(
+      tabela.pontoDeAcessoId,
+      tabela.hmacDoIdentificadorAnonimo,
+    ),
+  ],
+)
+
+export const progressosDaSessao = pgTable(
+  'progressos_da_sessao',
+  {
+    atualizadoEm: instanteDeAtualizacao(),
+    posicaoAtual: integer('posicao_atual').notNull(),
+    sessaoId: uuid('sessao_id')
+      .primaryKey()
+      .references(() => sessoesDeInteracao.id, { onDelete: 'restrict' }),
+    versaoDaExperienciaId: uuid('versao_da_experiencia_id')
+      .notNull()
+      .references(() => versoesDaExperiencia.id, { onDelete: 'restrict' }),
+  },
+  (tabela) => [
+    check('progressos_da_sessao_posicao_positiva', sql`${tabela.posicaoAtual} > 0`),
+    index('progressos_da_sessao_por_versao').on(
+      tabela.versaoDaExperienciaId,
     ),
   ],
 )
@@ -503,6 +791,214 @@ export const direitos = pgTable(
       tabela.negocioId,
       tabela.tipo,
       tabela.estado,
+    ),
+  ],
+)
+
+export const consentimentos = pgTable(
+  'consentimentos',
+  {
+    concedidoEm: timestamp('concedido_em', {
+      mode: 'date',
+      withTimezone: true,
+    }).notNull(),
+    contactoId: uuid('contacto_id').notNull(),
+    finalidade: varchar('finalidade', { length: 48 }).notNull(),
+    id: uuid('id').primaryKey(),
+    negocioId: uuid('negocio_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+    revogadoEm: timestamp('revogado_em', { mode: 'date', withTimezone: true }),
+    versao: varchar('versao', { length: 40 }).notNull(),
+  },
+  (tabela) => [
+    uniqueIndex('consentimentos_ativo_unico')
+      .on(tabela.negocioId, tabela.contactoId, tabela.finalidade)
+      .where(sql`${tabela.revogadoEm} IS NULL`),
+  ],
+)
+
+export const respostasPessoais = pgTable(
+  'respostas_pessoais',
+  {
+    chave: varchar('chave', { length: 80 }).notNull(),
+    classificacao: varchar('classificacao', { length: 32 }).notNull(),
+    contactoId: uuid('contacto_id').notNull(),
+    finalidade: varchar('finalidade', { length: 48 }).notNull(),
+    negocioId: uuid('negocio_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+    papeisPermitidos: varchar('papeis_permitidos', { length: 32 })
+      .array()
+      .notNull(),
+    reterAte: timestamp('reter_ate', { mode: 'date', withTimezone: true }).notNull(),
+    valorProtegido: text('valor_protegido').notNull(),
+  },
+  (tabela) => [
+    primaryKey({ columns: [tabela.negocioId, tabela.contactoId, tabela.chave] }),
+    index('respostas_pessoais_por_retencao').on(
+      tabela.negocioId,
+      tabela.reterAte,
+    ),
+  ],
+)
+
+export const supressoes = pgTable(
+  'supressoes',
+  {
+    contactoId: uuid('contacto_id').notNull(),
+    criadoEm: instanteDeCriacao(),
+    finalidade: varchar('finalidade', { length: 48 }).notNull(),
+    negocioId: uuid('negocio_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+  },
+  (tabela) => [
+    primaryKey({
+      columns: [tabela.negocioId, tabela.contactoId, tabela.finalidade],
+    }),
+  ],
+)
+
+export const mensagensOutbox = pgTable(
+  'mensagens_outbox',
+  {
+    contactoId: uuid('contacto_id').notNull(),
+    criadoEm: instanteDeCriacao(),
+    estado: varchar('estado', { length: 16 }).default('PENDENTE').notNull(),
+    finalidade: varchar('finalidade', { length: 48 }).notNull(),
+    id: uuid('id').primaryKey(),
+    leaseExpiraEm: timestamp('lease_expira_em', {
+      mode: 'date',
+      withTimezone: true,
+    }),
+    negocioId: uuid('negocio_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+    payloadProtegido: text('payload_protegido').notNull(),
+    tentativas: integer('tentativas').default(0).notNull(),
+    tentarEm: timestamp('tentar_em', { mode: 'date', withTimezone: true }),
+    trabalhador: varchar('trabalhador', { length: 128 }),
+  },
+  (tabela) => [
+    check('mensagens_outbox_tentativas_validas', sql`${tabela.tentativas} >= 0`),
+    index('mensagens_outbox_pendentes').on(
+      tabela.negocioId,
+      tabela.estado,
+      tabela.tentarEm,
+      tabela.criadoEm,
+    ),
+  ],
+)
+
+export const contribuicoes = pgTable(
+  'contribuicoes',
+  {
+    conteudoProtegido: text('conteudo_protegido'),
+    criadoEm: instanteDeCriacao(),
+    estado: varchar('estado', { length: 16 }).default('ATIVA').notNull(),
+    id: uuid('id').primaryKey(),
+    motivo: text('motivo'),
+    negocioId: uuid('negocio_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+    removidaEm: timestamp('removida_em', { mode: 'date', withTimezone: true }),
+    removidaPor: uuid('removida_por').references(() => utilizadores.id, {
+      onDelete: 'restrict',
+    }),
+  },
+  (tabela) => [index('contribuicoes_por_negocio_e_estado').on(tabela.negocioId, tabela.estado)],
+)
+
+export const conclusoesDeDestinatarios = pgTable(
+  'conclusoes_de_destinatarios',
+  {
+    concluidaEm: timestamp('concluida_em', {
+      mode: 'date',
+      withTimezone: true,
+    }).notNull(),
+    destinatarioId: uuid('destinatario_id').notNull(),
+    experienciaId: uuid('experiencia_id')
+      .notNull()
+      .references(() => experiencias.id, { onDelete: 'restrict' }),
+    negocioId: uuid('negocio_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+  },
+  (tabela) => [
+    primaryKey({
+      columns: [tabela.negocioId, tabela.experienciaId, tabela.destinatarioId],
+    }),
+  ],
+)
+
+export const pedidosDeRecordacao = pgTable(
+  'pedidos_de_recordacao',
+  {
+    atualizadoEm: instanteDeAtualizacao(),
+    criadoEm: instanteDeCriacao(),
+    estado: varchar('estado', { length: 20 }).default('PENDENTE').notNull(),
+    experienciaId: uuid('experiencia_id')
+      .notNull()
+      .references(() => experiencias.id, { onDelete: 'restrict' }),
+    formato: varchar('formato', { length: 12 }).notNull(),
+    id: uuid('id').primaryKey(),
+    negocioId: uuid('negocio_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+    objecto: text('objecto'),
+    requerenteId: uuid('requerente_id').notNull(),
+    tentativas: integer('tentativas').default(0).notNull(),
+    tipoDoRequerente: varchar('tipo_do_requerente', { length: 16 }).notNull(),
+  },
+  (tabela) => [
+    unique('pedidos_de_recordacao_idempotencia_unica').on(
+      tabela.negocioId,
+      tabela.experienciaId,
+      tabela.requerenteId,
+      tabela.tipoDoRequerente,
+      tabela.formato,
+    ),
+    index('pedidos_de_recordacao_pendentes').on(
+      tabela.negocioId,
+      tabela.estado,
+      tabela.criadoEm,
+    ),
+  ],
+)
+
+export const politicasDeRetencao = pgTable(
+  'politicas_de_retencao',
+  {
+    avisosEnviados: integer('avisos_enviados').default(0).notNull(),
+    eliminadaEm: timestamp('eliminada_em', { mode: 'date', withTimezone: true }),
+    estado: varchar('estado', { length: 16 }).notNull(),
+    experienciaId: uuid('experiencia_id')
+      .notNull()
+      .references(() => experiencias.id, { onDelete: 'restrict' }),
+    exportacao: varchar('exportacao', { length: 16 }).default('NAO_PEDIDA').notNull(),
+    instanteBase: timestamp('instante_base', {
+      mode: 'date',
+      withTimezone: true,
+    }).notNull(),
+    negocioId: uuid('negocio_id')
+      .notNull()
+      .references(() => negocios.id, { onDelete: 'restrict' }),
+  },
+  (tabela) => [
+    primaryKey({ columns: [tabela.negocioId, tabela.experienciaId] }),
+    check(
+      'politicas_de_retencao_avisos_validos',
+      sql`${tabela.avisosEnviados} BETWEEN 0 AND 2`,
+    ),
+    check(
+      'politicas_de_retencao_exportacao_antes_de_eliminar',
+      sql`${tabela.eliminadaEm} IS NULL OR ${tabela.exportacao} = 'PRONTA'`,
+    ),
+    index('politicas_de_retencao_por_vencimento').on(
+      tabela.negocioId,
+      tabela.estado,
+      tabela.instanteBase,
     ),
   ],
 )

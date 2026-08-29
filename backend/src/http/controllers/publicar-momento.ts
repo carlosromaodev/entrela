@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import type { z } from 'zod'
 
-import type { SessaoDoCriador } from '../../lib/seguranca/sessao-do-criador.js'
+import { pedidoDeSessao, type ResolvedorDeSessaoDoCriador } from '../../identidade/autenticacao/resolvedor-de-sessao.js'
 import type { PublicarMomento } from '../../service/publicar-momento.js'
 import type { esquemaDosParametrosDoMomento } from '../schemas/esquemas-dos-momentos.js'
 
@@ -11,13 +11,15 @@ type RequisicaoDePublicacao = FastifyRequest<{
 
 export function criarControladorDePublicacaoDoMomento(
   publicarMomento: PublicarMomento,
-  sessaoDoCriador: SessaoDoCriador,
+  sessaoDoCriador: ResolvedorDeSessaoDoCriador,
 ) {
   return async (
     requisicao: RequisicaoDePublicacao,
     resposta: FastifyReply,
   ) => {
-    const sessao = sessaoDoCriador.validar(requisicao.headers.authorization)
+    const sessao = await sessaoDoCriador.resolver(
+      pedidoDeSessao(requisicao.headers, true),
+    )
     const resultado = await publicarMomento.executar({
       contexto: {
         negocioId: sessao.negocioId,

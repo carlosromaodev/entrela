@@ -14,6 +14,7 @@ import { AtualizarRascunhoDoMomento } from '../service/atualizar-rascunho-do-mom
 import { ConsultarRascunhoDoMomento } from '../service/consultar-rascunho-do-momento.js'
 import { CriarMomento } from '../service/criar-momento.js'
 import { PublicarMomento } from '../service/publicar-momento.js'
+import { PreVisualizarMomento } from '../service/pre-visualizar-momento.js'
 import { RepositorioDeRevogacaoDeMomentosEmMemoria } from '../repository/em-memoria/repositorio-de-revogacao-de-momentos-em-memoria.js'
 import { RevogarAcessoDoMomento } from '../service/revogar-acesso-do-momento.js'
 import { esquemaDaRespostaDoCatalogoDeCategorias } from './schemas/esquemas-das-categorias.js'
@@ -30,9 +31,12 @@ import { esquemaDoErroHttp } from './schemas/esquemas-de-resposta-http.js'
 const configuracao: Configuracao = {
   ambiente: 'teste',
   chaveDeHmac: 'uma-chave-de-teste-com-pelo-menos-32-caracteres',
+  chaveDeMedia: 'outra-chave-de-media-com-pelo-menos-32-caracteres',
   chaveDeSessao: 'outra-chave-exclusiva-para-assinar-sessoes-de-teste',
+  diretorioDeMedia: '/tmp/entrela-media-teste',
   hospede: '127.0.0.1',
   nivelDeLog: 'silent',
+  origemPublica: 'http://localhost:3333',
   porta: 3333,
   urlDaBaseDeDados: 'postgresql://entrela:entrela@localhost:5432/entrela',
   versaoDaAplicacao: '0.1.0-teste',
@@ -154,6 +158,9 @@ function criarDependenciasDaConsulta() {
   const consultarRascunhoDoMomento = new ConsultarRascunhoDoMomento({
     repositorio: repositorioDePublicacao,
   })
+  const preVisualizarMomento = new PreVisualizarMomento({
+    repositorio: repositorioDePublicacao,
+  })
   const sessaoDoCriador = new SessaoDoCriador({
     chaveDeSessao: configuracao.chaveDeSessao,
     obterInstanteAtual: () => new Date('2026-08-02T12:00:00.000Z'),
@@ -165,7 +172,13 @@ function criarDependenciasDaConsulta() {
     utilizadorId,
   })
 
-  return { consultarRascunhoDoMomento, repositorioDePublicacao, sessaoDoCriador, token }
+  return {
+    consultarRascunhoDoMomento,
+    preVisualizarMomento,
+    repositorioDePublicacao,
+    sessaoDoCriador,
+    token,
+  }
 }
 
 function criarDependenciasDaRevogacao() {
@@ -528,6 +541,28 @@ describe('contrato HTTP da fundação', () => {
     expect(corpo.dados.etapas).toHaveLength(1)
     expect(corpo.dados).not.toHaveProperty('negocioId')
     expect(corpo.dados).not.toHaveProperty('hmacDoToken')
+  })
+
+  it('pré-visualiza uma etapa autenticada sem persistir sessão pública', async () => {
+    const dependencias = criarDependenciasDaConsulta()
+    aplicacao = await criarAplicacao({ configuracao, ...dependencias })
+    const resposta = await aplicacao.inject({
+      headers: { authorization: `Bearer ${dependencias.token}` },
+      method: 'POST',
+      payload: { estado: 'ATIVA', ordemDaEtapa: 1 },
+      url: `/v1/momentos/${momentoId}/sessoes-de-pre-visualizacao`,
+    })
+    expect(resposta.statusCode).toBe(200)
+    expect(resposta.json().dados).toMatchObject({
+      estado: 'ATIVA', etapa: { ordem: 1 }, titulo: 'Uma surpresa para ti',
+    })
+    const openapi = (
+      await aplicacao.inject({ method: 'GET', url: '/documentacao/json' })
+    ).json()
+    expect(
+      openapi.paths['/v1/momentos/{momentoId}/sessoes-de-pre-visualizacao'].post
+        .security,
+    ).toEqual([{ sessaoDoCriador: [] }])
   })
 
   it('recusa consultar rascunho sem sessão ou com identificador inválido', async () => {

@@ -134,3 +134,31 @@ export const esquemaDaRespostaDaRevogacaoDoMomento = z.strictObject({
   }),
   metadados: esquemaDosMetadadosHttp,
 })
+
+export const esquemaDoCorpoDaPreVisualizacao = z.discriminatedUnion('estado', [
+  z.strictObject({ estado: z.literal('EM_ESPERA') }),
+  z.strictObject({
+    estado: z.literal('ATIVA'),
+    ordemDaEtapa: z.number().int().min(1).max(6),
+  }),
+])
+
+export const esquemaDaRespostaDaPreVisualizacao = z.strictObject({
+  dados: z.union([
+    z.strictObject({
+      abreEm: z.string().nullable(),
+      capa: esquemaDaCapaDoMomento.nullable(),
+      estado: z.literal('EM_ESPERA'),
+      modeloEditorial: z.enum(['CARTA_INTIMA', 'MEMORIAS', 'CELEBRACAO']),
+      titulo: z.string(),
+    }),
+    z.strictObject({
+      capa: esquemaDaCapaDoMomento.nullable(),
+      estado: z.literal('ATIVA'),
+      etapa: esquemaDaEtapaDoMomento,
+      modeloEditorial: z.enum(['CARTA_INTIMA', 'MEMORIAS', 'CELEBRACAO']),
+      titulo: z.string(),
+    }),
+  ]),
+  metadados: esquemaDosMetadadosHttp,
+})

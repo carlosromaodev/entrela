@@ -6,11 +6,11 @@ on:
   pull_request:
 
 jobs:
-  build:
+  backend:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:16
+        image: postgres:18
         env:
           POSTGRES_USER: entrela
           POSTGRES_PASSWORD: entrela
@@ -23,6 +23,32 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-      - run: cd backend && npm ci && npm run build && npm run test
-      - run: cd frontend && npm ci && npm run build
+          node-version: 24
+      - name: Instalar dependências do backend
+        working-directory: backend
+        run: npm ci
+      - name: Validar tipagem e compilação do backend
+        working-directory: backend
+        run: npm run verificar-tipos && npm run compilar
+      - name: Aplicar migrações na base de integração
+        working-directory: backend
+        env:
+          URL_DA_BASE_DE_DADOS: postgresql://entrela:entrela@localhost:5432/entrela
+        run: npm run migracoes:aplicar
+      - name: Executar testes do backend
+        working-directory: backend
+        env:
+          URL_DE_BASE_DE_DADOS_DE_INTEGRACAO: postgresql://entrela:entrela@localhost:5432/entrela
+        run: npm run testar
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Instalar e compilar frontend
+        working-directory: frontend
+        run: npm ci && npm run typecheck && npm run build

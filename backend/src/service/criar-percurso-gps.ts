@@ -32,8 +32,7 @@ export class CriarPercursoGPS {
     // RN-EXP-01: só desbloqueia com proximidade real — validamos ordem sequencial
     // e que cada paragem tem coordenadas válidas (não adivinhação)
     const paragensOrdenadas = [...dados.paragens].sort((a, b) => a.ordem - b.ordem)
-    for (let i = 0; i < paragensOrdenadas.length; i++) {
-      const p = paragensOrdenadas[i]
+    for (const [i, p] of paragensOrdenadas.entries()) {
       if (p.ordem !== i + 1) {
         throw new Error('Ordem das paragens deve ser sequencial a partir de 1.')
       }

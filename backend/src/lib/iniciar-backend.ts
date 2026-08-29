@@ -1,6 +1,10 @@
-import type { FastifyInstance } from 'fastify'
+import type { FastifyInstance, FastifyRequest } from 'fastify'
 
 import { criarAplicacao } from '../app.js'
+import { adaptarResolvedorLegado, pedidoDeSessao } from '../identidade/autenticacao/resolvedor-de-sessao.js'
+import { ArmazenamentoLocalPrivado } from '../media/armazenamento-local-privado.js'
+import { RepositorioDeMediaPostgresql, FilaDeMediaPostgresql } from '../media/repositorio-postgresql.js'
+import { AssociarMediaAoBloco, ConfirmarUploadDeMedia, ObterDownloadTemporarioDeMedia, SolicitarUploadDeMedia } from '../media/servicos.js'
 import { RepositorioDeMomentosDrizzle } from '../repository/drizzle/repositorio-de-momentos-drizzle.js'
 import { RepositorioDeAcessoPublicoAMomentosDrizzle } from '../repository/drizzle/repositorio-de-acesso-publico-a-momentos-drizzle.js'
 import { RepositorioEditorialDeMomentosDrizzle } from '../repository/drizzle/repositorio-editorial-de-momentos-drizzle.js'
@@ -20,7 +24,6 @@ import {
 import { GeradorDeUuidV7 } from './identificadores/gerador-de-uuid-v7.js'
 import { SessaoDoCriador } from './seguranca/sessao-do-criador.js'
 import { TokenPublico } from './seguranca/token-publico.js'
-import { StoragePrivadoLocal } from './storage-privado-local.js'
 import { RateLimitMemoria } from './rate-limit-memoria.js'
 
 export async function iniciarBackend(
@@ -84,6 +87,21 @@ export async function iniciarBackend(
     chaveDeSessao: configuracao.chaveDeSessao,
     obterInstanteAtual: () => new Date(),
   })
+  const armazenamentoLocalDeMedia = new ArmazenamentoLocalPrivado(
+    configuracao.diretorioDeMedia,
+    configuracao.chaveDeMedia,
+    configuracao.origemPublica,
+  )
+  await armazenamentoLocalDeMedia.preparar()
+  const repositorioDeMedia = new RepositorioDeMediaPostgresql(ligacao.pool)
+  const filaDeMedia = new FilaDeMediaPostgresql(ligacao.pool)
+  const resolvedorDeSessao = adaptarResolvedorLegado(sessaoDoCriador)
+  const obterContextoDeMedia = async (requisicao: FastifyRequest) => {
+    const sessao = await resolvedorDeSessao.resolver(
+      pedidoDeSessao(requisicao.headers, true),
+    )
+    return { negocioId: sessao.negocioId, utilizadorId: sessao.utilizadorId }
+  }
   const aplicacao = await criarAplicacao({
     acederMomentoPublico,
     continuarNarrativaDoMomento,
@@ -92,6 +110,19 @@ export async function iniciarBackend(
     consultarRascunhoDoMomento,
     configuracao,
     criarMomento,
+    armazenamentoLocalDeMedia,
+    limiteDeMedia: {
+      janelaEmSegundos: 60,
+      maximoPorIp: 30,
+      rateLimit: new RateLimitMemoria(),
+    },
+    media: {
+      associarAoBloco: new AssociarMediaAoBloco(repositorioDeMedia),
+      confirmarUpload: new ConfirmarUploadDeMedia({ fila: filaDeMedia, repositorio: repositorioDeMedia }),
+      obterContexto: obterContextoDeMedia,
+      obterDownload: new ObterDownloadTemporarioDeMedia({ armazenamento: armazenamentoLocalDeMedia, obterInstanteAtual: () => new Date(), repositorio: repositorioDeMedia }),
+      solicitarUpload: new SolicitarUploadDeMedia({ armazenamento: armazenamentoLocalDeMedia, gerarId, obterInstanteAtual: () => new Date(), repositorio: repositorioDeMedia }),
+    },
     publicarMomento,
     preVisualizarMomento,
     revogarAcessoDoMomento,

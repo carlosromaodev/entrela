@@ -22,7 +22,7 @@ export class TokenPublico {
   gerar(): Readonly<{ hmacDoToken: string; token: string }> {
     const token = Buffer.from(this.gerarBytesAleatorios(32)).toString('base64url')
 
-    return { hmacDoToken: this.calcularHmac(token).toString('hex'), token }
+    return { hmacDoToken: this.calcularHmac(token), token }
   }
 
   correspondeAoHmac(token: string, hmacEsperado: string): boolean {
@@ -30,13 +30,13 @@ export class TokenPublico {
       return false
     }
 
-    const calculado = this.calcularHmac(token)
+    const calculado = Buffer.from(this.calcularHmac(token), 'hex')
     const esperado = Buffer.from(hmacEsperado, 'hex')
 
     return calculado.length === esperado.length && timingSafeEqual(calculado, esperado)
   }
 
-  private calcularHmac(token: string): Buffer {
-    return createHmac('sha256', this.chaveDeHmac).update(token).digest()
+  calcularHmac(token: string): string {
+    return createHmac('sha256', this.chaveDeHmac).update(token).digest('hex')
   }
 }

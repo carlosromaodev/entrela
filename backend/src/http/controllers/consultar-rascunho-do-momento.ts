@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import type { z } from 'zod'
 
-import type { SessaoDoCriador } from '../../lib/seguranca/sessao-do-criador.js'
+import { pedidoDeSessao, type ResolvedorDeSessaoDoCriador } from '../../identidade/autenticacao/resolvedor-de-sessao.js'
 import type { ConsultarRascunhoDoMomento } from '../../service/consultar-rascunho-do-momento.js'
 import type { esquemaDosParametrosDoMomento } from '../schemas/esquemas-dos-momentos.js'
 
@@ -11,10 +11,12 @@ type RequisicaoDeConsulta = FastifyRequest<{
 
 export function criarControladorDeConsultaDoRascunho(
   consultarRascunhoDoMomento: ConsultarRascunhoDoMomento,
-  sessaoDoCriador: SessaoDoCriador,
+  sessaoDoCriador: ResolvedorDeSessaoDoCriador,
 ) {
   return async (requisicao: RequisicaoDeConsulta, resposta: FastifyReply) => {
-    const sessao = sessaoDoCriador.validar(requisicao.headers.authorization)
+    const sessao = await sessaoDoCriador.resolver(
+      pedidoDeSessao(requisicao.headers, false),
+    )
     const resultado = await consultarRascunhoDoMomento.executar({
       contexto: {
         negocioId: sessao.negocioId,

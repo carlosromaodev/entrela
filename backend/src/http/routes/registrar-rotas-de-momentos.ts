@@ -2,10 +2,16 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 
 import type { SessaoDoCriador } from '../../lib/seguranca/sessao-do-criador.js'
+import {
+  adaptarResolvedorLegado,
+  pedidoDeSessao,
+  type ResolvedorDeSessaoDoCriador,
+} from '../../identidade/autenticacao/resolvedor-de-sessao.js'
 import type { AtualizarRascunhoDoMomento } from '../../service/atualizar-rascunho-do-momento.js'
 import type { ConsultarRascunhoDoMomento } from '../../service/consultar-rascunho-do-momento.js'
 import type { CriarMomento } from '../../service/criar-momento.js'
 import type { PublicarMomento } from '../../service/publicar-momento.js'
+import type { PreVisualizarMomento } from '../../service/pre-visualizar-momento.js'
 import type { RevogarAcessoDoMomento } from '../../service/revogar-acesso-do-momento.js'
 import { criarControladorDeAtualizacaoDoMomento } from '../controllers/atualizar-momento.js'
 import { criarControladorDeConsultaDoRascunho } from '../controllers/consultar-rascunho-do-momento.js'
@@ -18,9 +24,11 @@ import {
   esquemaDaRespostaDaCriacaoDoMomento,
   esquemaDaRespostaDaPublicacaoDoMomento,
   esquemaDaRespostaDaRevogacaoDoMomento,
+  esquemaDaRespostaDaPreVisualizacao,
   esquemaDoCorpoParaAtualizarMomento,
   esquemaDoCorpoParaCriarMomento,
   esquemaDoCorpoParaRevogarAcesso,
+  esquemaDoCorpoDaPreVisualizacao,
   esquemaDosParametrosDoMomento,
 } from '../schemas/esquemas-dos-momentos.js'
 import { esquemaDoErroHttp } from '../schemas/esquemas-de-resposta-http.js'
@@ -30,14 +38,60 @@ type DependenciasDasRotasDeMomentos = Readonly<{
   consultarRascunhoDoMomento?: ConsultarRascunhoDoMomento
   criarMomento?: CriarMomento
   publicarMomento?: PublicarMomento
+  preVisualizarMomento?: PreVisualizarMomento
   revogarAcessoDoMomento?: RevogarAcessoDoMomento
-  sessaoDoCriador: SessaoDoCriador
+  sessaoDoCriador: SessaoDoCriador | ResolvedorDeSessaoDoCriador
 }>
 
 export async function registrarRotasDeMomentos(
   aplicacao: FastifyInstance,
   dependencias: DependenciasDasRotasDeMomentos,
 ): Promise<void> {
+  const resolvedorDeSessao = adaptarResolvedorLegado(
+    dependencias.sessaoDoCriador,
+  )
+  if (dependencias.preVisualizarMomento !== undefined) {
+    aplicacao.withTypeProvider<ZodTypeProvider>().post(
+      '/v1/momentos/:momentoId/sessoes-de-pre-visualizacao',
+      {
+        schema: {
+          body: esquemaDoCorpoDaPreVisualizacao,
+          params: esquemaDosParametrosDoMomento,
+          response: {
+            200: esquemaDaRespostaDaPreVisualizacao,
+            400: esquemaDoErroHttp,
+            401: esquemaDoErroHttp,
+            403: esquemaDoErroHttp,
+            409: esquemaDoErroHttp,
+          },
+          security: [{ sessaoDoCriador: [] }],
+          summary: 'Pré-visualizar estado ou etapa do Momento',
+          tags: ['Momentos'],
+        },
+      },
+      async (requisicao, resposta) => {
+        const sessao = await resolvedorDeSessao.resolver(
+          pedidoDeSessao(requisicao.headers, true),
+        )
+        const resultado = await dependencias.preVisualizarMomento!.executar({
+          contexto: {
+            negocioId: sessao.negocioId,
+            utilizadorId: sessao.utilizadorId,
+          },
+          momentoId: requisicao.params.momentoId,
+          simulacao: requisicao.body,
+        })
+        return resposta.status(200).send({
+          dados: resultado,
+          metadados: {
+            idDaRequisicao: requisicao.id,
+            versaoDaAPI: 'v1' as const,
+          },
+        })
+      },
+    )
+  }
+
   if (dependencias.consultarRascunhoDoMomento !== undefined) {
     aplicacao.withTypeProvider<ZodTypeProvider>().get(
       '/v1/momentos/:momentoId',
@@ -61,7 +115,7 @@ export async function registrarRotasDeMomentos(
       },
       criarControladorDeConsultaDoRascunho(
         dependencias.consultarRascunhoDoMomento,
-        dependencias.sessaoDoCriador,
+        resolvedorDeSessao,
       ),
     )
   }
@@ -88,7 +142,7 @@ export async function registrarRotasDeMomentos(
       },
       criarControladorDeCriacaoDoMomento(
         dependencias.criarMomento,
-        dependencias.sessaoDoCriador,
+        resolvedorDeSessao,
       ),
     )
   }
@@ -118,7 +172,7 @@ export async function registrarRotasDeMomentos(
       },
       criarControladorDeAtualizacaoDoMomento(
         dependencias.atualizarRascunhoDoMomento,
-        dependencias.sessaoDoCriador,
+        resolvedorDeSessao,
       ),
     )
   }
@@ -146,7 +200,7 @@ export async function registrarRotasDeMomentos(
       },
       criarControladorDePublicacaoDoMomento(
         dependencias.publicarMomento,
-        dependencias.sessaoDoCriador,
+        resolvedorDeSessao,
       ),
     )
   }
@@ -175,7 +229,7 @@ export async function registrarRotasDeMomentos(
       },
       criarControladorDeRevogacaoDoMomento(
         dependencias.revogarAcessoDoMomento,
-        dependencias.sessaoDoCriador,
+        resolvedorDeSessao,
       ),
     )
   }

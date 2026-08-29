@@ -9,11 +9,14 @@ import {
 import {
   membrosDoNegocio,
   negocios,
+  eventosDeInteracao,
   pontosDeAcesso,
+  sessoesDeInteracao,
   utilizadores,
 } from '../../../drizzle/schema.js'
 import { RepositorioDeMomentosDrizzle } from './repositorio-de-momentos-drizzle.js'
 import { RepositorioEditorialDeMomentosDrizzle } from './repositorio-editorial-de-momentos-drizzle.js'
+import { RepositorioDeAcessoPublicoAMomentosDrizzle } from './repositorio-de-acesso-publico-a-momentos-drizzle.js'
 import { eq, sql } from 'drizzle-orm'
 
 // Só corre contra um PostgreSQL 18 real, com um papel que não seja
@@ -661,6 +664,165 @@ describe.skipIf(!urlDeIntegracao)(
           [...hmacsAtivos].every((hmac) => hmacsDaGeracaoA.has(hmac)) ||
             [...hmacsAtivos].every((hmac) => hmacsDaGeracaoB.has(hmac)),
         ).toBe(true)
+      } finally {
+        await ligacao.encerrar()
+      }
+    })
+
+    it('resolve tenant por HMAC sob RLS e abre uma única sessão em concorrência', async () => {
+      const ligacao = criarBaseDeDados(urlDeIntegracao as string)
+      try {
+        const { negocioId, utilizadorId } = await prepararNegocioComMembro(ligacao)
+        const criacao = new RepositorioDeMomentosDrizzle(ligacao.baseDeDados)
+        const editorial = new RepositorioEditorialDeMomentosDrizzle(
+          ligacao.baseDeDados,
+          { gerarId: () => randomUUID() },
+        )
+        const publico = new RepositorioDeAcessoPublicoAMomentosDrizzle(
+          ligacao.baseDeDados,
+        )
+        const momentoId = randomUUID()
+        const versaoId = randomUUID()
+        const pontoId = randomUUID()
+        const hmac = createHash('sha256').update(`publico:${momentoId}`).digest('hex')
+        await criacao.criarRascunho({
+          conteudo: { idioma: 'pt-AO', titulo: 'Acesso público real' },
+          experiencia: {
+            categoria: 'MOMENTOS', criadoPorUtilizadorId: utilizadorId,
+            estado: 'RASCUNHO', fusoHorario: 'Africa/Luanda', id: momentoId,
+            idiomaPredefinido: 'pt-AO', negocioId,
+            versaoDeRascunhoAtualId: versaoId, versaoPublicadaId: null,
+          },
+          versao: {
+            criadoPorUtilizadorId: utilizadorId, estado: 'RASCUNHO',
+            experienciaId: momentoId, id: versaoId, numero: 1,
+          },
+        })
+        await editorial.atualizarRascunho(negocioId, momentoId, {
+          capa: { corHexadecimal: '#654321', tipo: 'COR' },
+          etapas: [
+            { chave: 'inicio', final: false, ordem: 1, texto: 'Privado' },
+            { chave: 'final', final: true, ordem: 2, texto: 'Revelação' },
+          ],
+        })
+        await editorial.publicarAtomico({
+          abreEm: new Date().toISOString(), estadoDaExperiencia: 'PUBLICADA',
+          estadoDaVersao: 'PUBLICADA', momentoId, negocioId,
+          pontosDeAcesso: [{
+            canalDeOrigem: 'LINK', estado: 'ATIVO', hmacDoToken: hmac,
+            id: pontoId, momentoId, tipo: 'URL', versaoId,
+          }],
+          publicadoEm: new Date().toISOString(),
+          somaDeVerificacao: createHash('sha256').update(momentoId).digest('hex'),
+          versaoId,
+        })
+
+        const porta = await publico.resolver(hmac)
+        expect(porta).toMatchObject({ negocioId, pontoDeAcessoId: pontoId })
+        const hmacAnonimo = createHash('sha256').update(`anonimo:${momentoId}`).digest('hex')
+        const resultados = await Promise.all(
+          Array.from({ length: 20 }, () =>
+            publico.abrir({
+              estado: 'ATIVA', hmacAnonimo, idDoEvento: randomUUID(),
+              idDaSessao: randomUUID(), ocorreuEm: new Date().toISOString(), porta: porta!,
+            }),
+          ),
+        )
+        expect(new Set(resultados.map(({ sessaoId }) => sessaoId)).size).toBe(1)
+        expect(resultados[0]?.etapa?.texto).toBe('Privado')
+
+        const sessoes = await ligacao.baseDeDados.transaction(async (transacao) => {
+          await transacao.execute(sql`SELECT set_config('app.negocio_id', ${negocioId}, true)`)
+          return transacao.select({ id: sessoesDeInteracao.id })
+            .from(sessoesDeInteracao)
+            .where(eq(sessoesDeInteracao.pontoDeAcessoId, pontoId))
+        })
+        expect(sessoes).toHaveLength(1)
+        const eventos = await ligacao.baseDeDados.transaction(async (transacao) => {
+          await transacao.execute(sql`SELECT set_config('app.negocio_id', ${negocioId}, true)`)
+          return transacao.select({ id: eventosDeInteracao.id })
+            .from(eventosDeInteracao)
+            .where(eq(eventosDeInteracao.experienciaId, momentoId))
+        })
+        expect(eventos).toHaveLength(1)
+        const [consumo] = await ligacao.baseDeDados.transaction(async (transacao) => {
+          await transacao.execute(sql`SELECT set_config('app.negocio_id', ${negocioId}, true)`)
+          return transacao.select({ quantidade: pontosDeAcesso.quantidadeDeUsos })
+            .from(pontosDeAcesso).where(eq(pontosDeAcesso.id, pontoId))
+        })
+        expect(consumo?.quantidade).toBe(1)
+
+        const hmacEmEspera = createHash('sha256').update(`espera:${momentoId}`).digest('hex')
+        await publico.abrir({
+          estado: 'EM_ESPERA', hmacAnonimo: hmacEmEspera,
+          idDoEvento: randomUUID(), idDaSessao: randomUUID(),
+          ocorreuEm: new Date().toISOString(), porta: porta!,
+        })
+        await publico.abrir({
+          estado: 'ATIVA', hmacAnonimo: hmacEmEspera,
+          idDoEvento: randomUUID(), idDaSessao: randomUUID(),
+          ocorreuEm: new Date().toISOString(), porta: porta!,
+        })
+        const estadoDepoisDaEspera = await ligacao.baseDeDados.transaction(async (transacao) => {
+          await transacao.execute(sql`SELECT set_config('app.negocio_id', ${negocioId}, true)`)
+          const [ponto] = await transacao.select({ quantidade: pontosDeAcesso.quantidadeDeUsos })
+            .from(pontosDeAcesso).where(eq(pontosDeAcesso.id, pontoId))
+          const eventosAbertos = await transacao.select({ id: eventosDeInteracao.id })
+            .from(eventosDeInteracao).where(eq(eventosDeInteracao.experienciaId, momentoId))
+          return { eventosAbertos, ponto }
+        })
+        expect(estadoDepoisDaEspera.ponto?.quantidade).toBe(2)
+        expect(estadoDepoisDaEspera.eventosAbertos).toHaveLength(2)
+
+        const continuacoes = await Promise.all(
+          Array.from({ length: 20 }, () =>
+            publico.continuar({
+              chaveDaEtapaAtual: 'inicio',
+              chaveDeIdempotencia: 'continuacao-concorrente-0001',
+              hmacAnonimo,
+              idDoEvento: randomUUID(),
+              ocorreuEm: new Date().toISOString(),
+              porta: porta!,
+            }),
+          ),
+        )
+        expect(
+          continuacoes.every(
+            (resultado) =>
+              resultado.estado === 'ATIVA' && resultado.etapa.chave === 'final',
+          ),
+        ).toBe(true)
+        const estadoDaContinuacao = await ligacao.baseDeDados.transaction(
+          async (transacao) => {
+            await transacao.execute(
+              sql`SELECT set_config('app.negocio_id', ${negocioId}, true)`,
+            )
+            const progresso = await transacao.execute<{ posicao_atual: number }>(
+              sql`SELECT posicao_atual FROM progressos_da_sessao WHERE sessao_id = ${resultados[0]!.sessaoId}`,
+            )
+            const eventos = await transacao
+              .select({ tipo: eventosDeInteracao.tipo })
+              .from(eventosDeInteracao)
+              .where(eq(eventosDeInteracao.experienciaId, momentoId))
+            return { eventos, progresso: progresso.rows[0] }
+          },
+        )
+        expect(estadoDaContinuacao.progresso?.posicao_atual).toBe(2)
+        expect(
+          estadoDaContinuacao.eventos.filter(
+            ({ tipo }) => tipo === 'BLOCO_CONTINUADO',
+          ),
+        ).toHaveLength(1)
+        await expect(
+          publico.continuar({
+            chaveDaEtapaAtual: 'final',
+            chaveDeIdempotencia: 'continuacao-concorrente-0001',
+            hmacAnonimo,
+            idDoEvento: randomUUID(),
+            ocorreuEm: new Date().toISOString(),
+            porta: porta!,
+          }),
+        ).rejects.toThrow('CONTINUACAO_IDEMPOTENCIA_DIVERGENTE')
       } finally {
         await ligacao.encerrar()
       }

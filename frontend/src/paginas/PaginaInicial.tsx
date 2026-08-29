@@ -5,8 +5,11 @@ import {
   useRef,
   useState,
 } from 'react'
+import { Link } from 'react-router-dom'
+import CabecalhoPublico from '../componentes/CabecalhoPublico'
 
 type TipoDeCartao = 'image' | 'poster'
+type TemaVisual = 'celebrar' | 'surpreender' | 'convidar'
 
 type CartaoFlutuante = {
   id: string
@@ -20,11 +23,10 @@ type CartaoFlutuante = {
   mobileX?: string
   mobileY?: string
   mobileWidth?: string
+  mobileRatio?: string
   ratio?: string
   rotation: string
   depth: number
-  duration: string
-  delay: string
   hideOnMobile?: boolean
 }
 
@@ -35,14 +37,19 @@ type EstiloDoCartao = CSSProperties & {
   '--mobile-x': string
   '--mobile-y': string
   '--mobile-width': string
+  '--mobile-card-ratio': string
   '--card-ratio': string
   '--card-rotation': string
-  '--float-duration': string
-  '--float-delay': string
   '--entrance-delay': string
 }
 
-const palavrasAlternadas = ['momento', 'presente', 'convite', 'objecto']
+const palavrasAlternadas = ['momento', 'presente', 'convite']
+
+const indiceDaPalavraPorTema: Record<TemaVisual, number> = {
+  celebrar: 0,
+  surpreender: 1,
+  convidar: 2,
+}
 
 const cartoes: CartaoFlutuante[] = [
   {
@@ -54,13 +61,12 @@ const cartoes: CartaoFlutuante[] = [
     y: '-7.5%',
     width: '15.2vw',
     mobileX: '31%',
-    mobileY: '59%',
-    mobileWidth: '42vw',
+    mobileY: '61.5%',
+    mobileWidth: '34vw',
+    mobileRatio: '1 / 1',
     ratio: '1 / 1.12',
-    rotation: '-1.5deg',
+    rotation: '-.7deg',
     depth: 1.15,
-    duration: '6.8s',
-    delay: '-2.1s',
   },
   {
     id: 'letters',
@@ -70,13 +76,12 @@ const cartoes: CartaoFlutuante[] = [
     x: '19%',
     y: '12.5%',
     width: '10.6vw',
-    mobileX: '-18%',
-    mobileY: '65%',
-    mobileWidth: '43vw',
-    rotation: '-4deg',
+    mobileX: '-6%',
+    mobileY: '67%',
+    mobileWidth: '30vw',
+    mobileRatio: '1 / 1',
+    rotation: '-.8deg',
     depth: 1.45,
-    duration: '6.1s',
-    delay: '-3.4s',
   },
   {
     id: 'countdown',
@@ -86,14 +91,13 @@ const cartoes: CartaoFlutuante[] = [
     x: '4.8%',
     y: '30%',
     width: '8.3vw',
-    mobileX: '8%',
-    mobileY: '75%',
-    mobileWidth: '34vw',
+    mobileX: '10%',
+    mobileY: '78%',
+    mobileWidth: '31vw',
+    mobileRatio: '1 / 1.08',
     ratio: '1 / 1.16',
-    rotation: '2.5deg',
+    rotation: '.6deg',
     depth: 1.7,
-    duration: '7.2s',
-    delay: '-1.1s',
   },
   {
     id: 'voice',
@@ -106,10 +110,8 @@ const cartoes: CartaoFlutuante[] = [
     mobileX: '-12%',
     mobileY: '68%',
     mobileWidth: '34vw',
-    rotation: '-2deg',
+    rotation: '-.6deg',
     depth: 1.25,
-    duration: '7.4s',
-    delay: '-4.6s',
     hideOnMobile: true,
   },
   {
@@ -120,13 +122,12 @@ const cartoes: CartaoFlutuante[] = [
     x: '72%',
     y: '5.5%',
     width: '11.8vw',
-    mobileX: '75%',
+    mobileX: '74%',
     mobileY: '64%',
-    mobileWidth: '41vw',
-    rotation: '3deg',
+    mobileWidth: '29vw',
+    mobileRatio: '1 / 1',
+    rotation: '.8deg',
     depth: 1.5,
-    duration: '6.4s',
-    delay: '-2.8s',
   },
   {
     id: 'bouquet',
@@ -138,11 +139,10 @@ const cartoes: CartaoFlutuante[] = [
     width: '10.4vw',
     mobileX: '55%',
     mobileY: '77%',
-    mobileWidth: '42vw',
-    rotation: '-2deg',
+    mobileWidth: '36vw',
+    mobileRatio: '1 / 1',
+    rotation: '-.6deg',
     depth: 1.75,
-    duration: '6.9s',
-    delay: '-5.2s',
   },
   {
     id: 'invitation',
@@ -155,10 +155,8 @@ const cartoes: CartaoFlutuante[] = [
     mobileX: '77%',
     mobileY: '39%',
     mobileWidth: '30vw',
-    rotation: '4deg',
+    rotation: '1deg',
     depth: 1.3,
-    duration: '7.5s',
-    delay: '-3.7s',
     hideOnMobile: true,
   },
   {
@@ -169,10 +167,8 @@ const cartoes: CartaoFlutuante[] = [
     x: '79.2%',
     y: '69%',
     width: '11.2vw',
-    rotation: '1.5deg',
+    rotation: '.4deg',
     depth: 1.5,
-    duration: '6.2s',
-    delay: '-1.8s',
     hideOnMobile: true,
   },
   {
@@ -183,10 +179,8 @@ const cartoes: CartaoFlutuante[] = [
     x: '-3.2%',
     y: '78%',
     width: '11.6vw',
-    rotation: '5deg',
+    rotation: '1.2deg',
     depth: 1.8,
-    duration: '7.1s',
-    delay: '-4.2s',
     hideOnMobile: true,
   },
   {
@@ -198,10 +192,8 @@ const cartoes: CartaoFlutuante[] = [
     y: '80%',
     width: '11.7vw',
     ratio: '1 / .92',
-    rotation: '-3deg',
+    rotation: '-.8deg',
     depth: 1.2,
-    duration: '6.6s',
-    delay: '-3.1s',
     hideOnMobile: true,
   },
   {
@@ -213,10 +205,8 @@ const cartoes: CartaoFlutuante[] = [
     y: '87.5%',
     width: '13.4vw',
     ratio: '1 / .9',
-    rotation: '2deg',
+    rotation: '.6deg',
     depth: 1.35,
-    duration: '7.6s',
-    delay: '-5.5s',
     hideOnMobile: true,
   },
 ]
@@ -286,11 +276,10 @@ function CartaoDeExperienciaFlutuante({ cartao, indice }: { cartao: CartaoFlutua
     '--mobile-x': cartao.mobileX ?? cartao.x,
     '--mobile-y': cartao.mobileY ?? cartao.y,
     '--mobile-width': cartao.mobileWidth ?? cartao.width,
+    '--mobile-card-ratio': cartao.mobileRatio ?? cartao.ratio ?? '1 / 1',
     '--card-ratio': cartao.ratio ?? '1 / 1',
     '--card-rotation': cartao.rotation,
-    '--float-duration': cartao.duration,
-    '--float-delay': cartao.delay,
-    '--entrance-delay': `${180 + indice * 68}ms`,
+    '--entrance-delay': `${indice * 26}ms`,
   }
 
   return (
@@ -328,11 +317,12 @@ function CartaoDeExperienciaFlutuante({ cartao, indice }: { cartao: CartaoFlutua
 
 function PaginaInicial() {
   const referenciaDoDestaque = useRef<HTMLElement>(null)
+  const referenciaDoFecho = useRef<HTMLElement>(null)
   const referenciaDoQuadroDeAnimacao = useRef<number | null>(null)
-  const referenciaDoTemporizadorDaRevelacao = useRef<number | null>(null)
   const prefereMenosMovimento = usarPreferenciaPorMenosMovimento()
   const [indiceDaPalavra, definirIndiceDaPalavra] = useState(0)
-  const [destaqueDesperto, definirDestaqueDesperto] = useState(false)
+  const [temaVisualAtivo, definirTemaVisualAtivo] = useState<TemaVisual | null>(null)
+  const [fechoVisivel, definirFechoVisivel] = useState(false)
 
   const atualizarParalaxeDosCartoes = (evento: EventoDePonteiroReact<HTMLElement>) => {
     if (prefereMenosMovimento || evento.pointerType !== 'mouse' || !referenciaDoDestaque.current) return
@@ -363,22 +353,9 @@ function PaginaInicial() {
     })
   }
 
-  const abrirRevelacaoDoDestaque = () => {
-    if (prefereMenosMovimento || destaqueDesperto || referenciaDoTemporizadorDaRevelacao.current !== null) return
-
-    referenciaDoTemporizadorDaRevelacao.current = window.setTimeout(() => {
-      definirIndiceDaPalavra((indiceAtual) => (indiceAtual + 1) % palavrasAlternadas.length)
-      definirDestaqueDesperto(true)
-      referenciaDoTemporizadorDaRevelacao.current = null
-    }, 200)
-  }
-
-  const fecharRevelacaoDoDestaque = () => {
-    if (referenciaDoTemporizadorDaRevelacao.current !== null) {
-      window.clearTimeout(referenciaDoTemporizadorDaRevelacao.current)
-      referenciaDoTemporizadorDaRevelacao.current = null
-    }
-    definirDestaqueDesperto(false)
+  const ativarTemaVisual = (tema: TemaVisual) => {
+    definirTemaVisualAtivo(tema)
+    definirIndiceDaPalavra(indiceDaPalavraPorTema[tema])
   }
 
   useEffect(() => {
@@ -386,30 +363,45 @@ function PaginaInicial() {
       if (referenciaDoQuadroDeAnimacao.current !== null) {
         window.cancelAnimationFrame(referenciaDoQuadroDeAnimacao.current)
       }
-      if (referenciaDoTemporizadorDaRevelacao.current !== null) {
-        window.clearTimeout(referenciaDoTemporizadorDaRevelacao.current)
-      }
     }
   }, [])
+
+  useEffect(() => {
+    const fecho = referenciaDoFecho.current
+    if (!fecho || prefereMenosMovimento || !('IntersectionObserver' in window)) {
+      definirFechoVisivel(true)
+      return
+    }
+
+    const observador = new IntersectionObserver(
+      ([entrada]) => {
+        if (!entrada.isIntersecting) return
+        definirFechoVisivel(true)
+        observador.disconnect()
+      },
+      { threshold: 0.24 },
+    )
+
+    observador.observe(fecho)
+    return () => observador.disconnect()
+  }, [prefereMenosMovimento])
 
   return (
     <>
       <a className="skip-link" href="#conteudo">Saltar para o conteúdo</a>
 
-      <header className="site-header" aria-label="Navegação principal">
-        <a className="brand-mark" href="#inicio" aria-label="Entrela — início">
-          <img src="/brand/entrela-symbol.png" alt="" width="34" height="34" />
-        </a>
-        <a className="header-action" href="#criar">Começar</a>
-      </header>
+      <CabecalhoPublico acaoPrincipal={{ destino: '/entrar', rotulo: 'Entrar' }} />
 
       <main id="conteudo">
         <section
-          className={`hero${destaqueDesperto ? ' hero--awake' : ''}`}
+          className={`hero${temaVisualAtivo ? ` hero--visual-active hero--theme-${temaVisualAtivo}` : ''}`}
           id="inicio"
           ref={referenciaDoDestaque}
           onPointerMove={atualizarParalaxeDosCartoes}
-          onPointerLeave={reporParalaxeDosCartoes}
+          onPointerLeave={() => {
+            reporParalaxeDosCartoes()
+            definirTemaVisualAtivo(null)
+          }}
           aria-labelledby="hero-title"
         >
           <div className="floating-stage" aria-hidden="true">
@@ -419,42 +411,65 @@ function PaginaInicial() {
           </div>
 
           <div className="hero-focus" aria-hidden="true" />
-          <div className="hero-reveal" aria-hidden="true">
-            <span className="hero-reveal__orbit hero-reveal__orbit--one" />
-            <span className="hero-reveal__orbit hero-reveal__orbit--two" />
-            <span className="hero-reveal__pulse" />
-          </div>
-
           <div className="hero-content">
-            <img
-              className="hero-wordmark"
-              src="/brand/entrela-wordmark.png"
-              alt="Entrela"
-              width="1186"
-              height="187"
-            />
+            <span className="hero-wordmark" aria-label="Entrela">Entrela</span>
 
-            <h1 id="hero-title" aria-label="Há uma experiência dentro de cada momento.">
-              <span>Há uma experiência</span>
-              <span>dentro de cada</span>
-              <PalavraAlternada palavra={palavrasAlternadas[indiceDaPalavra]} />
+            <h1 id="hero-title" aria-label={`Há uma experiência dentro de cada ${palavrasAlternadas[indiceDaPalavra]}.`}>
+              <span className="hero-line-mask">
+                <span className="hero-line hero-line--one">Há uma experiência</span>
+              </span>
+              <span className="hero-line-mask">
+                <span className="hero-line hero-line--two">dentro de cada</span>
+              </span>
+              <span className="hero-line-mask hero-line-mask--accent">
+                <PalavraAlternada palavra={palavrasAlternadas[indiceDaPalavra]} />
+              </span>
             </h1>
 
             <p className="hero-description">
-              Cria experiências digitais para celebrar, surpreender ou convidar — e partilha-as por link ou QR.
+              Cria experiências digitais para{' '}
+              <Link
+                className="hero-example hero-example--celebrar"
+                to="/rascunho?intencao=celebrar"
+                onPointerEnter={() => ativarTemaVisual('celebrar')}
+                onPointerLeave={() => definirTemaVisualAtivo(null)}
+                onFocus={() => ativarTemaVisual('celebrar')}
+                onBlur={() => definirTemaVisualAtivo(null)}
+              >
+                celebrar
+              </Link>
+              {' '}momentos,{' '}
+              <Link
+                className="hero-example hero-example--surpreender"
+                to="/rascunho?intencao=surpreender"
+                onPointerEnter={() => ativarTemaVisual('surpreender')}
+                onPointerLeave={() => definirTemaVisualAtivo(null)}
+                onFocus={() => ativarTemaVisual('surpreender')}
+                onBlur={() => definirTemaVisualAtivo(null)}
+              >
+                surpreender
+              </Link>{' '}
+              alguém ou{' '}
+              <Link
+                className="hero-example hero-example--convidar"
+                to="/rascunho?intencao=convidar"
+                onPointerEnter={() => ativarTemaVisual('convidar')}
+                onPointerLeave={() => definirTemaVisualAtivo(null)}
+                onFocus={() => ativarTemaVisual('convidar')}
+                onBlur={() => definirTemaVisualAtivo(null)}
+              >
+                convidar
+              </Link>{' '}
+              pessoas — e partilha-as por link ou QR.
             </p>
 
             <div className="hero-actions" aria-label="Acções principais">
-              <a
+              <Link
                 className="button button--primary hero-primary-action"
-                href="#criar"
-                onPointerEnter={abrirRevelacaoDoDestaque}
-                onPointerLeave={fecharRevelacaoDoDestaque}
-                onFocus={abrirRevelacaoDoDestaque}
-                onBlur={fecharRevelacaoDoDestaque}
+                to="/rascunho"
               >
                 Criar uma experiência
-              </a>
+              </Link>
               <a className="text-link" href="#possibilidades">
                 Ver possibilidades <span aria-hidden="true">→</span>
               </a>
@@ -464,7 +479,12 @@ function PaginaInicial() {
           <div className="hero-fade" aria-hidden="true" />
         </section>
 
-        <section className="closing" id="possibilidades" aria-labelledby="closing-title">
+        <section
+          className={`closing${fechoVisivel ? ' closing--visible' : ''}`}
+          id="possibilidades"
+          ref={referenciaDoFecho}
+          aria-labelledby="closing-title"
+        >
           <div className="closing-orbit" aria-hidden="true">
             <span className="closing-orbit__ring closing-orbit__ring--one" />
             <span className="closing-orbit__ring closing-orbit__ring--two" />
@@ -485,7 +505,7 @@ function PaginaInicial() {
 
       <footer className="site-footer">
         <div className="footer-brand">
-          <img src="/brand/entrela-wordmark.png" alt="Entrela" width="1186" height="187" />
+          <span className="footer-wordmark">Entrela</span>
           <span>Experiências que conectam momentos.</span>
         </div>
 

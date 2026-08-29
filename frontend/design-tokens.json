@@ -1,0 +1,68 @@
+{
+  "color": {
+    "brand": {
+      "ivory": "#FDFCFB",
+      "pearlMauve": "#D8BFD8",
+      "celebrate": "#A63D6F",
+      "surprise": "#5B43D0",
+      "invite": "#8A5700"
+    },
+    "content": {
+      "primary": "#11110F",
+      "secondary": "rgba(17, 17, 15, 0.58)",
+      "tertiary": "rgba(17, 17, 15, 0.42)"
+    },
+    "surface": {
+      "primary": "#FDFCFB",
+      "glass": "rgba(253, 252, 251, 0.82)",
+      "subtle": "rgba(17, 17, 15, 0.035)"
+    },
+    "feedback": {
+      "error": "#8F2F41",
+      "focus": "rgba(216, 191, 216, 0.40)"
+    }
+  },
+  "typography": {
+    "family": "-apple-system, BlinkMacSystemFont, Helvetica Neue, Noto Sans, Arial, sans-serif",
+    "heroDesktop": { "size": "80px", "lineHeight": "0.92", "weight": 500 },
+    "heroMobile": { "size": "40px", "lineHeight": "0.98", "weight": 500 },
+    "title": { "size": "20px", "lineHeight": "24px", "weight": 600 },
+    "body": { "size": "16px", "lineHeight": "24px", "weight": 400 },
+    "label": { "size": "14px", "lineHeight": "20px", "weight": 520 }
+  },
+  "spacing": {
+    "1": "4px",
+    "2": "8px",
+    "3": "12px",
+    "4": "16px",
+    "5": "20px",
+    "6": "24px",
+    "8": "32px",
+    "12": "48px"
+  },
+  "radius": {
+    "field": "8px",
+    "action": "16px",
+    "card": "20px",
+    "pill": "999px"
+  },
+  "size": {
+    "authCard": "360px",
+    "authContent": "320px",
+    "control": "38px",
+    "publicHeader": "74px"
+  },
+  "motion": {
+    "easeOut": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "heroLineDuration": "1200ms",
+    "heroLineStagger": "150ms",
+    "supportDuration": "720ms",
+    "cardEntranceDuration": "940ms",
+    "cardEntranceStagger": "26ms"
+  },
+  "breakpoint": {
+    "mobile": "760px",
+    "compact": "420px",
+    "desktop": "1080px"
+  }
+}

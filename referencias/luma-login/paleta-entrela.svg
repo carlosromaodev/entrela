@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Paleta oficial da Entrela</title>
+  <desc id="desc">Amostras das cores marfim FDFCFB e malva-pérola D8BFD8</desc>
+  <rect width="1200" height="630" fill="#FDFCFB"/>
+  <text x="72" y="100" fill="#201C20" font-family="Arial, sans-serif" font-size="46" font-weight="700">Paleta Entrela</text>
+  <g transform="translate(72 158)">
+    <rect width="500" height="330" rx="30" fill="#FDFCFB" stroke="#201C20" stroke-opacity=".12"/>
+    <text x="34" y="252" fill="#201C20" font-family="Arial, sans-serif" font-size="30" font-weight="700">Marfim</text>
+    <text x="34" y="296" fill="#201C20" font-family="Arial, sans-serif" font-size="25">#FDFCFB</text>
+  </g>
+  <g transform="translate(628 158)">
+    <rect width="500" height="330" rx="30" fill="#D8BFD8"/>
+    <text x="34" y="252" fill="#201C20" font-family="Arial, sans-serif" font-size="30" font-weight="700">Malva-pérola</text>
+    <text x="34" y="296" fill="#201C20" font-family="Arial, sans-serif" font-size="25">#D8BFD8</text>
+  </g>
+  <text x="72" y="566" fill="#625B62" font-family="Arial, sans-serif" font-size="23">Cores extraídas da referência visual fornecida pelo projeto</text>
+</svg>

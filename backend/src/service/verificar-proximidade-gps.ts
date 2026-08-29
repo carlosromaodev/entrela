@@ -15,7 +15,7 @@ export class VerificarProximidadeGPS {
   async executar(e: unknown) {
     const { contexto, dados } = validarEntrada(esquema, e)
     // RN-EXP-01: só desbloqueia se proximidade real confirmada
-    const paragens = await this.d.repositorio.listarParagens(dados.perfilId)
+    const paragens = await this.d.repositorio.listarParagens(dados.perfilId, contexto.negocioId)
     const atual = paragens.find((p: any) => p.ordem === 1) // simplificado
     if (!atual) throw new Error('Percurso sem paragens.')
     const dist = Math.hypot(dados.latitude - atual.latitude, dados.longitude - atual.longitude)

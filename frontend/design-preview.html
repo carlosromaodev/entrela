@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-AO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entrela — pré-visualização do design system</title>
+  <style>
+    :root{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;color:#11110f;background:#fdfcfb}
+    *{box-sizing:border-box}body{margin:0;padding:48px;background:radial-gradient(circle at 85% 10%,#e7f0f6,transparent 30%),radial-gradient(circle at 12% 90%,rgba(216,191,216,.5),transparent 34%),#fdfcfb}
+    main{width:min(1040px,100%);margin:auto}.eyebrow{color:rgba(17,17,15,.48);font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+    h1{margin:10px 0 32px;font-size:clamp(44px,7vw,80px);font-weight:500;line-height:.92;letter-spacing:-.025em}.accent{color:#a783a7}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:48px;align-items:start}.tokens{display:grid;gap:24px}.group{padding:24px;border-radius:20px;background:rgba(255,255,255,.64)}
+    .swatches{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.swatch{min-height:140px;padding:18px;border:1px solid rgba(17,17,15,.1);border-radius:16px}.ivory{background:#fdfcfb}.mauve{background:#d8bfd8}
+    .card{padding:20px;border-radius:20px;background:rgba(253,252,251,.82);box-shadow:inset 0 0 0 1px rgba(17,17,15,.11),0 24px 70px rgba(70,55,70,.08)}
+    .symbol{display:grid;width:64px;height:64px;margin-bottom:16px;place-items:center;border-radius:50%;background:rgba(216,191,216,.25);font-size:34px}.card h2{margin:0;font-size:20px}.card p{margin:5px 0 22px;color:rgba(17,17,15,.58);line-height:1.45}
+    label{display:block;margin-bottom:7px;font-size:14px}input,button{width:100%;height:38px;border-radius:8px;font:inherit}input{padding:10px 14px;border:1px solid rgba(17,17,15,.28);background:white}button{margin-top:12px;border:0;border-radius:16px;color:white;background:#11110f;font-weight:600}
+    @media(max-width:760px){body{padding:28px 16px}.grid{grid-template-columns:1fr}.card{width:min(360px,100%)}h1{font-size:44px}}
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Design system · superfícies públicas</p>
+    <h1>Momentos que se tornam <span class="accent">experiências.</span></h1>
+    <div class="grid">
+      <section class="tokens" aria-label="Tokens visuais">
+        <div class="group">
+          <h2>Cores oficiais</h2>
+          <div class="swatches">
+            <div class="swatch ivory"><strong>Marfim</strong><br>#FDFCFB</div>
+            <div class="swatch mauve"><strong>Malva-pérola</strong><br>#D8BFD8</div>
+          </div>
+        </div>
+        <div class="group"><h2>Escala</h2><p>4 · 8 · 12 · 16 · 20 · 24 · 32 · 48</p><p>Raios: 8 · 16 · 20 · cápsula</p></div>
+      </section>
+      <section class="card" aria-label="Exemplo do cartão de autenticação">
+        <span class="symbol">e</span>
+        <h2>Bem-vindo à Entrela</h2>
+        <p>Inicia sessão ou cria a tua conta para continuar.</p>
+        <label for="preview-email">Email</label>
+        <input id="preview-email" type="email" placeholder="tu@email.com">
+        <button type="button">Continuar com email</button>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

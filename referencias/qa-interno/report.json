@@ -1,0 +1,1362 @@
+{
+  "url": "http://127.0.0.1:5174",
+  "generatedAt": "2026-08-27T12:43:46.429Z",
+  "pages": [
+    {
+      "name": "home",
+      "path": "/",
+      "profiles": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 1440,
+            "viewportWidth": 1440,
+            "pageHeight": 1885,
+            "main": {
+              "x": 0,
+              "y": 0,
+              "width": 1440,
+              "height": 1780,
+              "top": 0,
+              "right": 1440,
+              "bottom": 1780,
+              "left": 0
+            },
+            "hero": {
+              "x": 0,
+              "y": 0,
+              "width": 1440,
+              "height": 1000,
+              "top": 0,
+              "right": 1440,
+              "bottom": 1000,
+              "left": 0
+            },
+            "heroContent": {
+              "x": 270,
+              "y": 202.21875,
+              "width": 900,
+              "height": 555.5625,
+              "top": 202.21875,
+              "right": 1170,
+              "bottom": 757.78125,
+              "left": 270
+            },
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "headerBrand": {
+              "x": 26,
+              "y": 16,
+              "width": 115.375,
+              "height": 42,
+              "top": 16,
+              "right": 141.375,
+              "bottom": 58,
+              "left": 26
+            },
+            "internalBrand": null,
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "closing": {
+            "visible": true,
+            "titleOpacity": "0.999907"
+          },
+          "visualThemes": [
+            {
+              "name": "celebrar",
+              "selector": ".hero-example--celebrar",
+              "word": "momento",
+              "heroClass": "hero hero--visual-active hero--theme-celebrar",
+              "visibleCards": 11
+            },
+            {
+              "name": "surpreender",
+              "selector": ".hero-example--surpreender",
+              "word": "presente",
+              "heroClass": "hero hero--visual-active hero--theme-surpreender",
+              "visibleCards": 11
+            },
+            {
+              "name": "convidar",
+              "selector": ".hero-example--convidar",
+              "word": "convite",
+              "heroClass": "hero hero--visual-active hero--theme-convidar",
+              "visibleCards": 11
+            }
+          ]
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 768,
+            "viewportWidth": 768,
+            "pageHeight": 1973,
+            "main": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 1822.71875,
+              "top": 0,
+              "right": 768,
+              "bottom": 1822.71875,
+              "left": 0
+            },
+            "hero": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 1024,
+              "top": 0,
+              "right": 768,
+              "bottom": 1024,
+              "left": 0
+            },
+            "heroContent": {
+              "x": 24,
+              "y": 248.8671875,
+              "width": 720,
+              "height": 485.296875,
+              "top": 248.8671875,
+              "right": 744,
+              "bottom": 734.1640625,
+              "left": 24
+            },
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "headerBrand": {
+              "x": 26,
+              "y": 16,
+              "width": 115.375,
+              "height": 42,
+              "top": 16,
+              "right": 141.375,
+              "bottom": 58,
+              "left": 26
+            },
+            "internalBrand": null,
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "closing": {
+            "visible": true,
+            "titleOpacity": "0.999824"
+          }
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 390,
+            "viewportWidth": 390,
+            "pageHeight": 1617,
+            "main": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 1419.671875,
+              "top": 0,
+              "right": 390,
+              "bottom": 1419.671875,
+              "left": 0
+            },
+            "hero": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 812,
+              "top": 0,
+              "right": 390,
+              "bottom": 812,
+              "left": 0
+            },
+            "heroContent": {
+              "x": 14,
+              "y": 78,
+              "width": 362,
+              "height": 384.90625,
+              "top": 78,
+              "right": 376,
+              "bottom": 462.90625,
+              "left": 14
+            },
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "headerBrand": {
+              "x": 14,
+              "y": 12,
+              "width": 101.78125,
+              "height": 40,
+              "top": 12,
+              "right": 115.78125,
+              "bottom": 52,
+              "left": 14
+            },
+            "internalBrand": null,
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "closing": {
+            "visible": true,
+            "titleOpacity": "1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "path": "/entrar",
+      "profiles": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 1440,
+            "viewportWidth": 1440,
+            "pageHeight": 1000,
+            "main": {
+              "x": 0,
+              "y": 0,
+              "width": 1440,
+              "height": 1000,
+              "top": 0,
+              "right": 1440,
+              "bottom": 1000,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": {
+              "x": 540,
+              "y": 192,
+              "width": 360,
+              "height": 442,
+              "top": 192,
+              "right": 900,
+              "bottom": 634,
+              "left": 540
+            },
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "headerBrand": {
+              "x": 26,
+              "y": 16,
+              "width": 115.375,
+              "height": 42,
+              "top": 16,
+              "right": 141.375,
+              "bottom": 58,
+              "left": 26
+            },
+            "internalBrand": null,
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": []
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 768,
+            "viewportWidth": 768,
+            "pageHeight": 1024,
+            "main": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 1024,
+              "top": 0,
+              "right": 768,
+              "bottom": 1024,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": {
+              "x": 204,
+              "y": 192,
+              "width": 360,
+              "height": 442,
+              "top": 192,
+              "right": 564,
+              "bottom": 634,
+              "left": 204
+            },
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "headerBrand": {
+              "x": 26,
+              "y": 16,
+              "width": 115.375,
+              "height": 42,
+              "top": 16,
+              "right": 141.375,
+              "bottom": 58,
+              "left": 26
+            },
+            "internalBrand": null,
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": []
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 390,
+            "viewportWidth": 390,
+            "pageHeight": 844,
+            "main": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 844,
+              "top": 0,
+              "right": 390,
+              "bottom": 844,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": {
+              "x": 16,
+              "y": 94,
+              "width": 358,
+              "height": 442,
+              "top": 94,
+              "right": 374,
+              "bottom": 536,
+              "left": 16
+            },
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "headerBrand": {
+              "x": 14,
+              "y": 12,
+              "width": 101.78125,
+              "height": 40,
+              "top": 12,
+              "right": 115.78125,
+              "bottom": 52,
+              "left": 14
+            },
+            "internalBrand": null,
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": []
+        }
+      ]
+    },
+    {
+      "name": "painel",
+      "path": "/painel",
+      "profiles": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 1440,
+            "viewportWidth": 1440,
+            "pageHeight": 1000,
+            "main": {
+              "x": 316,
+              "y": 56,
+              "width": 808,
+              "height": 944,
+              "top": 56,
+              "right": 1124,
+              "bottom": 1000,
+              "left": 316
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": {
+              "x": 316,
+              "y": 56,
+              "width": 808,
+              "height": 944,
+              "top": 56,
+              "right": 1124,
+              "bottom": 1000,
+              "left": 316
+            },
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 20,
+              "y": 15.5,
+              "width": 93.375,
+              "height": 25,
+              "top": 15.5,
+              "right": 113.375,
+              "bottom": 40.5,
+              "left": 20
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "library": {
+            "cards": 3,
+            "heading": "Escolhe um ritmo para a história"
+          }
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 768,
+            "viewportWidth": 768,
+            "pageHeight": 1024,
+            "main": {
+              "x": 44,
+              "y": 56,
+              "width": 680,
+              "height": 968,
+              "top": 56,
+              "right": 724,
+              "bottom": 1024,
+              "left": 44
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": {
+              "x": 44,
+              "y": 56,
+              "width": 680,
+              "height": 968,
+              "top": 56,
+              "right": 724,
+              "bottom": 1024,
+              "left": 44
+            },
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 20,
+              "y": 15.5,
+              "width": 93.375,
+              "height": 25,
+              "top": 15.5,
+              "right": 113.375,
+              "bottom": 40.5,
+              "left": 20
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [
+            {
+              "id": "link-name",
+              "impact": "serious",
+              "help": "Links must have discernible text",
+              "nodes": 1,
+              "targets": [
+                ".internal-create-link"
+              ]
+            }
+          ],
+          "library": {
+            "cards": 3,
+            "heading": "Escolhe um ritmo para a história"
+          }
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 390,
+            "viewportWidth": 390,
+            "pageHeight": 844,
+            "main": {
+              "x": 16,
+              "y": 54,
+              "width": 358,
+              "height": 790,
+              "top": 54,
+              "right": 374,
+              "bottom": 844,
+              "left": 16
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": {
+              "x": 16,
+              "y": 54,
+              "width": 358,
+              "height": 790,
+              "top": 54,
+              "right": 374,
+              "bottom": 844,
+              "left": 16
+            },
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 14,
+              "y": 12,
+              "width": 30,
+              "height": 30,
+              "top": 12,
+              "right": 44,
+              "bottom": 42,
+              "left": 14
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [
+            {
+              "id": "link-name",
+              "impact": "serious",
+              "help": "Links must have discernible text",
+              "nodes": 1,
+              "targets": [
+                ".internal-create-link"
+              ]
+            }
+          ],
+          "library": {
+            "cards": 3,
+            "heading": "Escolhe um ritmo para a história"
+          }
+        }
+      ]
+    },
+    {
+      "name": "criar",
+      "path": "/rascunho",
+      "profiles": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 1440,
+            "viewportWidth": 1440,
+            "pageHeight": 1000,
+            "main": {
+              "x": 248,
+              "y": 56,
+              "width": 944,
+              "height": 790.515625,
+              "top": 56,
+              "right": 1192,
+              "bottom": 846.515625,
+              "left": 248
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": {
+              "x": 248,
+              "y": 68,
+              "width": 944,
+              "height": 708.515625,
+              "top": 68,
+              "right": 1192,
+              "bottom": 776.515625,
+              "left": 248
+            },
+            "editorWorkspace": null,
+            "settings": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 20,
+              "y": 15.5,
+              "width": 93.375,
+              "height": 25,
+              "top": 15.5,
+              "right": 113.375,
+              "bottom": 40.5,
+              "left": 20
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [
+            {
+              "id": "color-contrast",
+              "impact": "serious",
+              "help": "Elements must meet minimum color contrast ratio thresholds",
+              "nodes": 16,
+              "targets": [
+                "nav > a[href$=\"painel\"][data-discover=\"true\"] > span",
+                "a[href=\"/painel?vista=biblioteca\"] > span",
+                "a[href=\"/painel?vista=destinatarios\"] > span",
+                ".internal-time",
+                "button[role=\"option\"][type=\"button\"]:nth-child(2) > span > strong",
+                "button[role=\"option\"][type=\"button\"]:nth-child(3) > span > strong",
+                ".inline-choice",
+                ".creation-add-row.creation-block[type=\"button\"]:nth-child(6) > span > small",
+                ".creation-add-row.creation-block[type=\"button\"]:nth-child(7) > span > small",
+                ".creation-options > p",
+                ".definition-row:nth-child(1) > .definition-row__copy > small",
+                ".definition-row:nth-child(1) > .definition-row__control > button[type=\"button\"]",
+                ".definition-row:nth-child(2) > .definition-row__copy > small",
+                ".definition-row:nth-child(3) > .definition-row__copy > small",
+                ".definition-row:nth-child(3) > .definition-row__control > button[type=\"button\"]",
+                ".creation-form__hint"
+              ]
+            }
+          ],
+          "creation": {
+            "title": "Uma memória para ti",
+            "recipient": "Ana",
+            "coverCopy": "Ana"
+          }
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 768,
+            "viewportWidth": 768,
+            "pageHeight": 1024,
+            "main": {
+              "x": 39,
+              "y": 56,
+              "width": 690,
+              "height": 781.875,
+              "top": 56,
+              "right": 729,
+              "bottom": 837.875,
+              "left": 39
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": {
+              "x": 39,
+              "y": 68,
+              "width": 690,
+              "height": 699.875,
+              "top": 68,
+              "right": 729,
+              "bottom": 767.875,
+              "left": 39
+            },
+            "editorWorkspace": null,
+            "settings": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 20,
+              "y": 15.5,
+              "width": 93.375,
+              "height": 25,
+              "top": 15.5,
+              "right": 113.375,
+              "bottom": 40.5,
+              "left": 20
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [
+            {
+              "id": "color-contrast",
+              "impact": "serious",
+              "help": "Elements must meet minimum color contrast ratio thresholds",
+              "nodes": 12,
+              "targets": [
+                "button[role=\"option\"][type=\"button\"]:nth-child(2) > span > strong",
+                "button[role=\"option\"][type=\"button\"]:nth-child(3) > span > strong",
+                ".inline-choice",
+                ".creation-add-row.creation-block[type=\"button\"]:nth-child(6) > span > small",
+                ".creation-add-row.creation-block[type=\"button\"]:nth-child(7) > span > small",
+                ".creation-options > p",
+                ".definition-row:nth-child(1) > .definition-row__copy > small",
+                ".definition-row:nth-child(1) > .definition-row__control > button[type=\"button\"]",
+                ".definition-row:nth-child(2) > .definition-row__copy > small",
+                ".definition-row:nth-child(3) > .definition-row__copy > small",
+                ".definition-row:nth-child(3) > .definition-row__control > button[type=\"button\"]",
+                ".creation-form__hint"
+              ]
+            },
+            {
+              "id": "link-name",
+              "impact": "serious",
+              "help": "Links must have discernible text",
+              "nodes": 1,
+              "targets": [
+                ".internal-create-link"
+              ]
+            }
+          ],
+          "creation": {
+            "title": "Uma memória para ti",
+            "recipient": "Ana",
+            "coverCopy": "Ana"
+          }
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 390,
+            "viewportWidth": 390,
+            "pageHeight": 1000,
+            "main": {
+              "x": 14,
+              "y": 54,
+              "width": 362,
+              "height": 945.796875,
+              "top": 54,
+              "right": 376,
+              "bottom": 999.796875,
+              "left": 14
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": {
+              "x": 14,
+              "y": 62,
+              "width": 362,
+              "height": 867.796875,
+              "top": 62,
+              "right": 376,
+              "bottom": 929.796875,
+              "left": 14
+            },
+            "editorWorkspace": null,
+            "settings": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 14,
+              "y": 12,
+              "width": 30,
+              "height": 30,
+              "top": 12,
+              "right": 44,
+              "bottom": 42,
+              "left": 14
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [
+            {
+              "id": "button-name",
+              "impact": "critical",
+              "help": "Buttons must have discernible text",
+              "nodes": 3,
+              "targets": [
+                "button[role=\"option\"][type=\"button\"]:nth-child(1)",
+                "button[role=\"option\"][type=\"button\"]:nth-child(2)",
+                "button[role=\"option\"][type=\"button\"]:nth-child(3)"
+              ]
+            },
+            {
+              "id": "color-contrast",
+              "impact": "serious",
+              "help": "Elements must meet minimum color contrast ratio thresholds",
+              "nodes": 11,
+              "targets": [
+                ".theme-picker__button > small",
+                ".inline-choice",
+                ".creation-add-row.creation-block[type=\"button\"]:nth-child(6) > span > small",
+                ".creation-add-row.creation-block[type=\"button\"]:nth-child(7) > span > small",
+                ".creation-options > p",
+                ".definition-row:nth-child(1) > .definition-row__copy > small",
+                ".definition-row:nth-child(1) > .definition-row__control > button[type=\"button\"]",
+                ".definition-row:nth-child(2) > .definition-row__copy > small",
+                ".definition-row:nth-child(3) > .definition-row__copy > small",
+                ".definition-row:nth-child(3) > .definition-row__control > button[type=\"button\"]",
+                ".creation-form__hint"
+              ]
+            },
+            {
+              "id": "link-name",
+              "impact": "serious",
+              "help": "Links must have discernible text",
+              "nodes": 1,
+              "targets": [
+                ".internal-create-link"
+              ]
+            }
+          ],
+          "creation": {
+            "title": "Uma memória para ti",
+            "recipient": "Ana",
+            "coverCopy": "Ana"
+          }
+        }
+      ]
+    },
+    {
+      "name": "editar",
+      "path": "/editar",
+      "profiles": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 1440,
+            "viewportWidth": 1440,
+            "pageHeight": 1000,
+            "main": {
+              "x": 0,
+              "y": 56,
+              "width": 1440,
+              "height": 944,
+              "top": 56,
+              "right": 1440,
+              "bottom": 1000,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": {
+              "x": 0,
+              "y": 118,
+              "width": 1440,
+              "height": 882,
+              "top": 118,
+              "right": 1440,
+              "bottom": 1000,
+              "left": 0
+            },
+            "settings": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 20,
+              "y": 15.5,
+              "width": 93.375,
+              "height": 25,
+              "top": 15.5,
+              "right": 113.375,
+              "bottom": 40.5,
+              "left": 20
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [
+            {
+              "id": "color-contrast",
+              "impact": "serious",
+              "help": "Elements must meet minimum color contrast ratio thresholds",
+              "nodes": 24,
+              "targets": [
+                "nav > a[href$=\"painel\"][data-discover=\"true\"] > span",
+                "a[href=\"/painel?vista=biblioteca\"] > span",
+                "a[href=\"/painel?vista=destinatarios\"] > span",
+                ".internal-time",
+                "div:nth-child(1) > span > small",
+                ".save-state",
+                ".editor-outline__heading > span",
+                ".editor-outline__heading > small",
+                ".is-active > span",
+                "li:nth-child(2) > button > span",
+                "li:nth-child(2) > button > strong",
+                "li:nth-child(3) > button > span",
+                "li:nth-child(3) > button > strong",
+                ".editor-add-step",
+                ".editor-canvas__topline > span",
+                ".media-dropzone > small",
+                ".editor-canvas__note > p",
+                ".editor-inspector__section:nth-child(1) > .eyebrow",
+                ".editor-inspector__section:nth-child(1) > label:nth-child(2)",
+                "label:nth-child(3)",
+                ".editor-inspector__section:nth-child(2) > .eyebrow",
+                "button:nth-child(2) > span:nth-child(2) > small",
+                "button:nth-child(3) > span:nth-child(2) > small",
+                "button:nth-child(4) > span:nth-child(2) > small"
+              ]
+            }
+          ],
+          "editor": {
+            "steps": 3,
+            "title": "Uma pequena pausa"
+          }
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 768,
+            "viewportWidth": 768,
+            "pageHeight": 1516,
+            "main": {
+              "x": 0,
+              "y": 56,
+              "width": 768,
+              "height": 1460,
+              "top": 56,
+              "right": 768,
+              "bottom": 1516,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": {
+              "x": 0,
+              "y": 118,
+              "width": 768,
+              "height": 1398,
+              "top": 118,
+              "right": 768,
+              "bottom": 1516,
+              "left": 0
+            },
+            "settings": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 20,
+              "y": 15.5,
+              "width": 93.375,
+              "height": 25,
+              "top": 15.5,
+              "right": 113.375,
+              "bottom": 40.5,
+              "left": 20
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [
+            {
+              "id": "color-contrast",
+              "impact": "serious",
+              "help": "Elements must meet minimum color contrast ratio thresholds",
+              "nodes": 20,
+              "targets": [
+                "div:nth-child(1) > span > small",
+                ".save-state",
+                ".editor-outline__heading > span",
+                ".editor-outline__heading > small",
+                ".is-active > span",
+                "li:nth-child(2) > button > span",
+                "li:nth-child(2) > button > strong",
+                "li:nth-child(3) > button > span",
+                "li:nth-child(3) > button > strong",
+                ".editor-add-step",
+                ".editor-canvas__topline > span",
+                ".media-dropzone > small",
+                ".editor-canvas__note > p",
+                ".editor-inspector__section:nth-child(1) > .eyebrow",
+                ".editor-inspector__section:nth-child(1) > label:nth-child(2)",
+                "label:nth-child(3)",
+                ".editor-inspector__section:nth-child(2) > .eyebrow",
+                "button:nth-child(2) > span:nth-child(2) > small",
+                "button:nth-child(3) > span:nth-child(2) > small",
+                "button:nth-child(4) > span:nth-child(2) > small"
+              ]
+            },
+            {
+              "id": "link-name",
+              "impact": "serious",
+              "help": "Links must have discernible text",
+              "nodes": 1,
+              "targets": [
+                ".internal-create-link"
+              ]
+            }
+          ],
+          "editor": {
+            "steps": 3,
+            "title": "Uma pequena pausa"
+          }
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 390,
+            "viewportWidth": 390,
+            "pageHeight": 1682,
+            "main": {
+              "x": 0,
+              "y": 54,
+              "width": 390,
+              "height": 1628,
+              "top": 54,
+              "right": 390,
+              "bottom": 1682,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": {
+              "x": 0,
+              "y": 116,
+              "width": 390,
+              "height": 1566,
+              "top": 116,
+              "right": 390,
+              "bottom": 1682,
+              "left": 0
+            },
+            "settings": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 14,
+              "y": 12,
+              "width": 30,
+              "height": 30,
+              "top": 12,
+              "right": 44,
+              "bottom": 42,
+              "left": 14
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [
+            {
+              "id": "color-contrast",
+              "impact": "serious",
+              "help": "Elements must meet minimum color contrast ratio thresholds",
+              "nodes": 19,
+              "targets": [
+                "div:nth-child(1) > span > small",
+                ".save-state",
+                ".editor-outline__heading > span",
+                ".editor-outline__heading > small",
+                ".is-active > span",
+                "li:nth-child(2) > button > span",
+                "li:nth-child(2) > button > strong",
+                "li:nth-child(3) > button > span",
+                ".editor-add-step",
+                ".editor-canvas__topline > span",
+                ".media-dropzone > small",
+                ".editor-canvas__note > p",
+                ".editor-inspector__section:nth-child(1) > .eyebrow",
+                ".editor-inspector__section:nth-child(1) > label:nth-child(2)",
+                "label:nth-child(3)",
+                ".editor-inspector__section:nth-child(2) > .eyebrow",
+                "button:nth-child(2) > span:nth-child(2) > small",
+                "button:nth-child(3) > span:nth-child(2) > small",
+                "button:nth-child(4) > span:nth-child(2) > small"
+              ]
+            },
+            {
+              "id": "link-name",
+              "impact": "serious",
+              "help": "Links must have discernible text",
+              "nodes": 1,
+              "targets": [
+                ".internal-create-link"
+              ]
+            }
+          ],
+          "editor": {
+            "steps": 3,
+            "title": "Uma pequena pausa"
+          }
+        }
+      ]
+    },
+    {
+      "name": "configuracoes",
+      "path": "/configuracoes/conta",
+      "profiles": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 1440,
+            "viewportWidth": 1440,
+            "pageHeight": 1251,
+            "main": {
+              "x": 316,
+              "y": 56,
+              "width": 808,
+              "height": 1194.890625,
+              "top": 56,
+              "right": 1124,
+              "bottom": 1250.890625,
+              "left": 316
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": {
+              "x": 316,
+              "y": 56,
+              "width": 808,
+              "height": 1194.890625,
+              "top": 56,
+              "right": 1124,
+              "bottom": 1250.890625,
+              "left": 316
+            },
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 20,
+              "y": 15.5,
+              "width": 93.375,
+              "height": 25,
+              "top": 15.5,
+              "right": 113.375,
+              "bottom": 40.5,
+              "left": 20
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [
+            {
+              "id": "color-contrast",
+              "impact": "serious",
+              "help": "Elements must meet minimum color contrast ratio thresholds",
+              "nodes": 5,
+              "targets": [
+                ".setting-card--email > div > small",
+                ".definition-row:nth-child(1) > .definition-row__copy > small",
+                ".definition-row:nth-child(1) > .definition-row__control > button[type=\"button\"]",
+                ".definition-row:nth-child(2) > .definition-row__copy > small",
+                ".definition-row:nth-child(2) > .definition-row__control > button[type=\"button\"]"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 768,
+            "viewportWidth": 768,
+            "pageHeight": 1237,
+            "main": {
+              "x": 44,
+              "y": 56,
+              "width": 680,
+              "height": 1180.890625,
+              "top": 56,
+              "right": 724,
+              "bottom": 1236.890625,
+              "left": 44
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": {
+              "x": 44,
+              "y": 56,
+              "width": 680,
+              "height": 1180.890625,
+              "top": 56,
+              "right": 724,
+              "bottom": 1236.890625,
+              "left": 44
+            },
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 20,
+              "y": 15.5,
+              "width": 93.375,
+              "height": 25,
+              "top": 15.5,
+              "right": 113.375,
+              "bottom": 40.5,
+              "left": 20
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [
+            {
+              "id": "color-contrast",
+              "impact": "serious",
+              "help": "Elements must meet minimum color contrast ratio thresholds",
+              "nodes": 5,
+              "targets": [
+                ".setting-card--email > div > small",
+                ".definition-row:nth-child(1) > .definition-row__copy > small",
+                ".definition-row:nth-child(1) > .definition-row__control > button[type=\"button\"]",
+                ".definition-row:nth-child(2) > .definition-row__copy > small",
+                ".definition-row:nth-child(2) > .definition-row__control > button[type=\"button\"]"
+              ]
+            },
+            {
+              "id": "link-name",
+              "impact": "serious",
+              "help": "Links must have discernible text",
+              "nodes": 1,
+              "targets": [
+                ".internal-create-link"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 390,
+            "viewportWidth": 390,
+            "pageHeight": 1468,
+            "main": {
+              "x": 14,
+              "y": 54,
+              "width": 362,
+              "height": 1413.890625,
+              "top": 54,
+              "right": 376,
+              "bottom": 1467.890625,
+              "left": 14
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": {
+              "x": 14,
+              "y": 54,
+              "width": 362,
+              "height": 1413.890625,
+              "top": 54,
+              "right": 376,
+              "bottom": 1467.890625,
+              "left": 14
+            },
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 14,
+              "y": 12,
+              "width": 30,
+              "height": 30,
+              "top": 12,
+              "right": 44,
+              "bottom": 42,
+              "left": 14
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [
+            {
+              "id": "color-contrast",
+              "impact": "serious",
+              "help": "Elements must meet minimum color contrast ratio thresholds",
+              "nodes": 5,
+              "targets": [
+                ".setting-card--email > div > small",
+                ".definition-row:nth-child(1) > .definition-row__copy > small",
+                ".definition-row:nth-child(1) > .definition-row__control > button[type=\"button\"]",
+                ".definition-row:nth-child(2) > .definition-row__copy > small",
+                ".definition-row:nth-child(2) > .definition-row__control > button[type=\"button\"]"
+              ]
+            },
+            {
+              "id": "link-name",
+              "impact": "serious",
+              "help": "Links must have discernible text",
+              "nodes": 1,
+              "targets": [
+                ".internal-create-link"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

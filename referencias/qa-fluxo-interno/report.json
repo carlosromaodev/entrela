@@ -1,0 +1,1022 @@
+{
+  "url": "http://127.0.0.1:5174",
+  "generatedAt": "2026-08-27T19:53:14.941Z",
+  "pages": [
+    {
+      "name": "painel",
+      "path": "/painel",
+      "profiles": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 1440,
+            "viewportWidth": 1440,
+            "pageHeight": 1000,
+            "main": {
+              "x": 250,
+              "y": 64,
+              "width": 940,
+              "height": 936,
+              "top": 64,
+              "right": 1190,
+              "bottom": 1000,
+              "left": 250
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": {
+              "x": 250,
+              "y": 64,
+              "width": 940,
+              "height": 936,
+              "top": 64,
+              "right": 1190,
+              "bottom": 1000,
+              "left": 250
+            },
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "publicExperience": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 26,
+              "y": 17.5,
+              "width": 97.375,
+              "height": 29,
+              "top": 17.5,
+              "right": 123.375,
+              "bottom": 46.5,
+              "left": 26
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "library": {
+            "cards": 3,
+            "heading": "Escolhe um ritmo para a história"
+          },
+          "notificationsPopover": {
+            "expanded": "true",
+            "open": true,
+            "accessibility": []
+          }
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 768,
+            "viewportWidth": 768,
+            "pageHeight": 1024,
+            "main": {
+              "x": 44,
+              "y": 56,
+              "width": 680,
+              "height": 968,
+              "top": 56,
+              "right": 724,
+              "bottom": 1024,
+              "left": 44
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": {
+              "x": 44,
+              "y": 56,
+              "width": 680,
+              "height": 968,
+              "top": 56,
+              "right": 724,
+              "bottom": 1024,
+              "left": 44
+            },
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "publicExperience": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 20,
+              "y": 15.5,
+              "width": 93.375,
+              "height": 25,
+              "top": 15.5,
+              "right": 113.375,
+              "bottom": 40.5,
+              "left": 20
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "library": {
+            "cards": 3,
+            "heading": "Escolhe um ritmo para a história"
+          }
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 390,
+            "viewportWidth": 390,
+            "pageHeight": 844,
+            "main": {
+              "x": 16,
+              "y": 54,
+              "width": 358,
+              "height": 790,
+              "top": 54,
+              "right": 374,
+              "bottom": 844,
+              "left": 16
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": {
+              "x": 16,
+              "y": 54,
+              "width": 358,
+              "height": 790,
+              "top": 54,
+              "right": 374,
+              "bottom": 844,
+              "left": 16
+            },
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "publicExperience": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 14,
+              "y": 12,
+              "width": 30,
+              "height": 30,
+              "top": 12,
+              "right": 44,
+              "bottom": 42,
+              "left": 14
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "library": {
+            "cards": 3,
+            "heading": "Escolhe um ritmo para a história"
+          }
+        }
+      ]
+    },
+    {
+      "name": "criar",
+      "path": "/rascunho",
+      "profiles": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 1440,
+            "viewportWidth": 1440,
+            "pageHeight": 1000,
+            "main": {
+              "x": 180,
+              "y": 64,
+              "width": 1080,
+              "height": 752,
+              "top": 64,
+              "right": 1260,
+              "bottom": 816,
+              "left": 180
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": {
+              "x": 180,
+              "y": 86,
+              "width": 1080,
+              "height": 660,
+              "top": 86,
+              "right": 1260,
+              "bottom": 746,
+              "left": 180
+            },
+            "editorWorkspace": null,
+            "settings": null,
+            "publicExperience": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 26,
+              "y": 17.5,
+              "width": 97.375,
+              "height": 29,
+              "top": 17.5,
+              "right": 123.375,
+              "bottom": 46.5,
+              "left": 26
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "creation": {
+            "title": "Uma memória para ti",
+            "recipient": "Ana",
+            "coverCopy": "Ana"
+          },
+          "creationCover": {
+            "file": "login-mobile-390x844.png",
+            "preview": true
+          },
+          "creationModal": {
+            "open": true,
+            "title": "Acesso privado por desenho",
+            "accessibility": []
+          },
+          "creationFlow": {
+            "path": "/editar",
+            "editorTitle": "Uma memória para ti",
+            "recipient": "Ana"
+          }
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 768,
+            "viewportWidth": 768,
+            "pageHeight": 1024,
+            "main": {
+              "x": 39,
+              "y": 56,
+              "width": 690,
+              "height": 655.875,
+              "top": 56,
+              "right": 729,
+              "bottom": 711.875,
+              "left": 39
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": {
+              "x": 39,
+              "y": 68,
+              "width": 690,
+              "height": 573.875,
+              "top": 68,
+              "right": 729,
+              "bottom": 641.875,
+              "left": 39
+            },
+            "editorWorkspace": null,
+            "settings": null,
+            "publicExperience": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 20,
+              "y": 15.5,
+              "width": 93.375,
+              "height": 25,
+              "top": 15.5,
+              "right": 113.375,
+              "bottom": 40.5,
+              "left": 20
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "creation": {
+            "title": "Uma memória para ti",
+            "recipient": "Ana",
+            "coverCopy": "Ana"
+          }
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 390,
+            "viewportWidth": 390,
+            "pageHeight": 874,
+            "main": {
+              "x": 14,
+              "y": 54,
+              "width": 362,
+              "height": 819.796875,
+              "top": 54,
+              "right": 376,
+              "bottom": 873.796875,
+              "left": 14
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": {
+              "x": 14,
+              "y": 62,
+              "width": 362,
+              "height": 741.796875,
+              "top": 62,
+              "right": 376,
+              "bottom": 803.796875,
+              "left": 14
+            },
+            "editorWorkspace": null,
+            "settings": null,
+            "publicExperience": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 14,
+              "y": 12,
+              "width": 30,
+              "height": 30,
+              "top": 12,
+              "right": 44,
+              "bottom": 42,
+              "left": 14
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "creation": {
+            "title": "Uma memória para ti",
+            "recipient": "Ana",
+            "coverCopy": "Ana"
+          }
+        }
+      ]
+    },
+    {
+      "name": "editar",
+      "path": "/editar",
+      "profiles": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 1440,
+            "viewportWidth": 1440,
+            "pageHeight": 1008,
+            "main": {
+              "x": 0,
+              "y": 64,
+              "width": 1440,
+              "height": 944,
+              "top": 64,
+              "right": 1440,
+              "bottom": 1008,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": {
+              "x": 0,
+              "y": 134,
+              "width": 1440,
+              "height": 866,
+              "top": 134,
+              "right": 1440,
+              "bottom": 1000,
+              "left": 0
+            },
+            "settings": null,
+            "publicExperience": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 26,
+              "y": 17.5,
+              "width": 97.375,
+              "height": 29,
+              "top": 17.5,
+              "right": 123.375,
+              "bottom": 46.5,
+              "left": 26
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "editor": {
+            "steps": 3,
+            "title": "Uma pequena pausa"
+          },
+          "publicationModal": {
+            "open": true,
+            "checks": 4,
+            "accessibility": []
+          },
+          "publicationFlow": {
+            "open": true,
+            "title": "O momento está entrelaçado",
+            "state": "Publicado",
+            "accessibility": []
+          }
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 768,
+            "viewportWidth": 768,
+            "pageHeight": 1524,
+            "main": {
+              "x": 0,
+              "y": 56,
+              "width": 768,
+              "height": 1468,
+              "top": 56,
+              "right": 768,
+              "bottom": 1524,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": {
+              "x": 0,
+              "y": 118,
+              "width": 768,
+              "height": 1406,
+              "top": 118,
+              "right": 768,
+              "bottom": 1524,
+              "left": 0
+            },
+            "settings": null,
+            "publicExperience": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 20,
+              "y": 15.5,
+              "width": 93.375,
+              "height": 25,
+              "top": 15.5,
+              "right": 113.375,
+              "bottom": 40.5,
+              "left": 20
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "editor": {
+            "steps": 3,
+            "title": "Uma pequena pausa"
+          }
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 390,
+            "viewportWidth": 390,
+            "pageHeight": 1690,
+            "main": {
+              "x": 0,
+              "y": 54,
+              "width": 390,
+              "height": 1636,
+              "top": 54,
+              "right": 390,
+              "bottom": 1690,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": {
+              "x": 0,
+              "y": 116,
+              "width": 390,
+              "height": 1574,
+              "top": 116,
+              "right": 390,
+              "bottom": 1690,
+              "left": 0
+            },
+            "settings": null,
+            "publicExperience": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 14,
+              "y": 12,
+              "width": 30,
+              "height": 30,
+              "top": 12,
+              "right": 44,
+              "bottom": 42,
+              "left": 14
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "editor": {
+            "steps": 3,
+            "title": "Uma pequena pausa"
+          }
+        }
+      ]
+    },
+    {
+      "name": "configuracoes",
+      "path": "/configuracoes/conta",
+      "profiles": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 1440,
+            "viewportWidth": 1440,
+            "pageHeight": 1381,
+            "main": {
+              "x": 250,
+              "y": 64,
+              "width": 940,
+              "height": 1317.390625,
+              "top": 64,
+              "right": 1190,
+              "bottom": 1381.390625,
+              "left": 250
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": {
+              "x": 250,
+              "y": 64,
+              "width": 940,
+              "height": 1317.390625,
+              "top": 64,
+              "right": 1190,
+              "bottom": 1381.390625,
+              "left": 250
+            },
+            "publicExperience": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 26,
+              "y": 17.5,
+              "width": 97.375,
+              "height": 29,
+              "top": 17.5,
+              "right": 123.375,
+              "bottom": 46.5,
+              "left": 26
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "sessionModal": {
+            "open": true,
+            "title": "Sessões ativas",
+            "devices": 1,
+            "accessibility": []
+          }
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 768,
+            "viewportWidth": 768,
+            "pageHeight": 1237,
+            "main": {
+              "x": 44,
+              "y": 56,
+              "width": 680,
+              "height": 1180.890625,
+              "top": 56,
+              "right": 724,
+              "bottom": 1236.890625,
+              "left": 44
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": {
+              "x": 44,
+              "y": 56,
+              "width": 680,
+              "height": 1180.890625,
+              "top": 56,
+              "right": 724,
+              "bottom": 1236.890625,
+              "left": 44
+            },
+            "publicExperience": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 20,
+              "y": 15.5,
+              "width": 93.375,
+              "height": 25,
+              "top": 15.5,
+              "right": 113.375,
+              "bottom": 40.5,
+              "left": 20
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": []
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 390,
+            "viewportWidth": 390,
+            "pageHeight": 1468,
+            "main": {
+              "x": 14,
+              "y": 54,
+              "width": 362,
+              "height": 1413.890625,
+              "top": 54,
+              "right": 376,
+              "bottom": 1467.890625,
+              "left": 14
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": {
+              "x": 14,
+              "y": 54,
+              "width": 362,
+              "height": 1413.890625,
+              "top": 54,
+              "right": 376,
+              "bottom": 1467.890625,
+              "left": 14
+            },
+            "publicExperience": null,
+            "headerBrand": null,
+            "internalBrand": {
+              "x": 14,
+              "y": 12,
+              "width": 30,
+              "height": 30,
+              "top": 12,
+              "right": 44,
+              "bottom": 42,
+              "left": 14
+            },
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": []
+        }
+      ]
+    },
+    {
+      "name": "preview",
+      "path": "/pre-visualizacao",
+      "profiles": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 1440,
+            "viewportWidth": 1440,
+            "pageHeight": 1000,
+            "main": {
+              "x": 0,
+              "y": 64,
+              "width": 1440,
+              "height": 936,
+              "top": 64,
+              "right": 1440,
+              "bottom": 1000,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "publicExperience": {
+              "x": 0,
+              "y": 64,
+              "width": 1440,
+              "height": 936,
+              "top": 64,
+              "right": 1440,
+              "bottom": 1000,
+              "left": 0
+            },
+            "headerBrand": null,
+            "internalBrand": null,
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": []
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 768,
+            "viewportWidth": 768,
+            "pageHeight": 1024,
+            "main": {
+              "x": 0,
+              "y": 64,
+              "width": 768,
+              "height": 960,
+              "top": 64,
+              "right": 768,
+              "bottom": 1024,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "publicExperience": {
+              "x": 0,
+              "y": 64,
+              "width": 768,
+              "height": 960,
+              "top": 64,
+              "right": 768,
+              "bottom": 1024,
+              "left": 0
+            },
+            "headerBrand": null,
+            "internalBrand": null,
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": []
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 390,
+            "viewportWidth": 390,
+            "pageHeight": 844,
+            "main": {
+              "x": 0,
+              "y": 58,
+              "width": 390,
+              "height": 786,
+              "top": 58,
+              "right": 390,
+              "bottom": 844,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "publicExperience": {
+              "x": 0,
+              "y": 58,
+              "width": 390,
+              "height": 786,
+              "top": 58,
+              "right": 390,
+              "bottom": 844,
+              "left": 0
+            },
+            "headerBrand": null,
+            "internalBrand": null,
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": []
+        }
+      ]
+    },
+    {
+      "name": "publico",
+      "path": "/publico/token-publico-de-auditoria-1234567890",
+      "profiles": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 1440,
+            "viewportWidth": 1440,
+            "pageHeight": 1000,
+            "main": {
+              "x": 0,
+              "y": 0,
+              "width": 1440,
+              "height": 1000,
+              "top": 0,
+              "right": 1440,
+              "bottom": 1000,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "publicExperience": {
+              "x": 0,
+              "y": 0,
+              "width": 1440,
+              "height": 1000,
+              "top": 0,
+              "right": 1440,
+              "bottom": 1000,
+              "left": 0
+            },
+            "headerBrand": null,
+            "internalBrand": null,
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": [],
+          "recipientFlow": {
+            "opened": true,
+            "title": "Revelacao final",
+            "completed": "Este momento fica contigo"
+          }
+        },
+        {
+          "name": "tablet",
+          "width": 768,
+          "height": 1024,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 768,
+            "viewportWidth": 768,
+            "pageHeight": 1024,
+            "main": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 1024,
+              "top": 0,
+              "right": 768,
+              "bottom": 1024,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "publicExperience": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 1024,
+              "top": 0,
+              "right": 768,
+              "bottom": 1024,
+              "left": 0
+            },
+            "headerBrand": null,
+            "internalBrand": null,
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": []
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "layout": {
+            "documentWidth": 390,
+            "viewportWidth": 390,
+            "pageHeight": 844,
+            "main": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 844,
+              "top": 0,
+              "right": 390,
+              "bottom": 844,
+              "left": 0
+            },
+            "hero": null,
+            "heroContent": null,
+            "authCard": null,
+            "dashboard": null,
+            "creationLayout": null,
+            "editorWorkspace": null,
+            "settings": null,
+            "publicExperience": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 844,
+              "top": 0,
+              "right": 390,
+              "bottom": 844,
+              "left": 0
+            },
+            "headerBrand": null,
+            "internalBrand": null,
+            "unloadedImages": [],
+            "horizontalOverflow": false
+          },
+          "consoleErrors": [],
+          "accessibility": []
+        }
+      ]
+    }
+  ]
+}

@@ -8,7 +8,7 @@ const esquema = z.strictObject({
     tipo: z.enum(['destinatario', 'convidado', 'visitante', 'lead']),
     contactoId: z.string().uuid().optional(),
     utilizadorId: z.string().uuid().optional(),
-    atributos: z.record(z.unknown()).optional(),
+    atributos: z.record(z.string(), z.unknown()).optional(),
   }),
 })
 
@@ -18,6 +18,7 @@ export class RegistrarParticipante {
     const { contexto, dados } = validarEntrada(esquema, e)
     // Invariante 4.4: contacto/utilizador opcional, tipo definido
     return this.d.repositorio.criar({
+      negocioId: contexto.negocioId,
       experienciaId: dados.experienciaId,
       tipo: dados.tipo,
       contactoId: dados.contactoId,

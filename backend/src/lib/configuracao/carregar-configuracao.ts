@@ -5,11 +5,14 @@ const esquemaDasVariaveisDoProcesso = z.object({
     .enum(['desenvolvimento', 'teste', 'producao'])
     .default('desenvolvimento'),
   CHAVE_DE_HMAC: z.string().min(32),
+  CHAVE_DE_MEDIA: z.string().min(32),
   CHAVE_DE_SESSAO: z.string().min(32),
+  DIRETORIO_DE_MEDIA: z.string().trim().min(1),
   HOSPEDE: z.string().trim().min(1).default('0.0.0.0'),
   NIVEL_DE_LOG: z
     .enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'])
     .optional(),
+  ORIGEM_PUBLICA: z.url(),
   PORTA: z.coerce.number().int().min(1).max(65_535).default(3333),
   URL_DA_BASE_DE_DADOS: z
     .url()
@@ -35,9 +38,12 @@ export type NivelDeLog =
 export type Configuracao = Readonly<{
   ambiente: Ambiente
   chaveDeHmac: string
+  chaveDeMedia: string
   chaveDeSessao: string
+  diretorioDeMedia: string
   hospede: string
   nivelDeLog: NivelDeLog
+  origemPublica: string
   porta: number
   urlDaBaseDeDados: string
   versaoDaAplicacao: string
@@ -75,11 +81,14 @@ export function carregarConfiguracao(
   return Object.freeze({
     ambiente: variaveisValidadas.AMBIENTE,
     chaveDeHmac: variaveisValidadas.CHAVE_DE_HMAC,
+    chaveDeMedia: variaveisValidadas.CHAVE_DE_MEDIA,
     chaveDeSessao: variaveisValidadas.CHAVE_DE_SESSAO,
+    diretorioDeMedia: variaveisValidadas.DIRETORIO_DE_MEDIA,
     hospede: variaveisValidadas.HOSPEDE,
     nivelDeLog:
       variaveisValidadas.NIVEL_DE_LOG ??
       (variaveisValidadas.AMBIENTE === 'teste' ? 'silent' : 'info'),
+    origemPublica: variaveisValidadas.ORIGEM_PUBLICA,
     porta: variaveisValidadas.PORTA,
     urlDaBaseDeDados: variaveisValidadas.URL_DA_BASE_DE_DADOS,
     versaoDaAplicacao: variaveisValidadas.VERSAO_DA_APLICACAO,
