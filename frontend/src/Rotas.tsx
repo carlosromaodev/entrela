@@ -5,6 +5,7 @@ import EditarConteudo from './paginas/EditarConteudo'
 import PreVisualizacaoPublica from './paginas/PreVisualizacaoPublica'
 import PaginaPublicaDestinatario from './paginas/PaginaPublicaDestinatario'
 import PaginaDeEvento from './paginas/PaginaDeEvento'
+import PaginaDescobrir from './paginas/PaginaDescobrir'
 import PaginaDeLogin from './paginas/PaginaDeLogin'
 import Painel from './paginas/Painel'
 import Configuracoes from './paginas/Configuracoes'
@@ -23,6 +24,7 @@ export default function Rotas() {
         <Route path="/rascunho" element={<CriarRascunho />} />
         <Route path="/editar" element={<EditarConteudo />} />
         <Route path="/pre-visualizacao" element={<PreVisualizacaoPublica />} />
+        <Route path="/descobrir" element={<PaginaDescobrir />} />
         <Route path="/publico/:token" element={<PaginaPublicaDestinatario />} />
         <Route path="/eventos" element={<PaginaDeEvento />} />
         <Route path="/eventos/:id" element={<PaginaDeEvento />} />

@@ -73,6 +73,8 @@ export default function PaginaDeEvento() {
       </header>
 
       <main className="event-main">
+        <Link to="/descobrir" className="event-back-link">← Voltar a Descobrir Eventos</Link>
+
         <div className="event-hero">
           <div className="event-hero__cover">
             <span className="event-hero__badge">Entrela Eventos · {id ? `ID: ${id.slice(0, 8)}` : 'Edição Especial'}</span>
