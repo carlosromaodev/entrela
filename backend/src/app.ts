@@ -15,6 +15,12 @@ import { registrarRotasDeMomentos } from './http/routes/registrar-rotas-de-momen
 import { registrarRotasDeSaude } from './http/routes/registrar-rotas-de-saude.js'
 import { registrarHttpDeMedia, type DependenciasHttpDeMedia } from './media/http.js'
 import { ArmazenamentoLocalPrivado, registrarHttpDoArmazenamentoLocal } from './media/armazenamento-local-privado.js'
+import { registrarRotasDeAutenticacao } from './identidade/autenticacao/http.js'
+import type { ConfirmarDesafio, RevogarSessao, RotacionarSessao, SolicitarDesafio } from './identidade/autenticacao/servicos.js'
+import { registrarRotasCoreDeEventos } from './eventos/core/http.js'
+import type { GerirEvento } from './eventos/core/servicos.js'
+import { registrarHttpDeRecordacoes } from './recordacoes/http.js'
+import type { PedirRecordacao } from './recordacoes/servicos.js'
 import type { RateLimit } from './lib/rate-limit.js'
 import type { Configuracao } from './lib/configuracao/carregar-configuracao.js'
 import type { SessaoDoCriador } from './lib/seguranca/sessao-do-criador.js'
@@ -53,6 +59,20 @@ type DependenciasDaAplicacao = Readonly<{
   limiteDeMedia?: Readonly<{ janelaEmSegundos: number; maximoPorIp: number; rateLimit: RateLimit }>
   revogarAcessoDoMomento?: RevogarAcessoDoMomento
   sessaoDoCriador?: SessaoDoCriador
+  autenticacao?: Readonly<{
+    confirmar: ConfirmarDesafio
+    revogar: RevogarSessao
+    rotacionar: RotacionarSessao
+    solicitar: SolicitarDesafio
+  }>
+  eventosCore?: Readonly<{
+    gerir: GerirEvento
+    contexto: (a?: string) => Promise<{ negocioId: string; utilizadorId: string }>
+  }>
+  recordacoes?: Readonly<{
+    contexto: () => Promise<{ negocioId: string; requerenteId: string; tipoDoRequerente: 'CRIADOR' | 'DESTINATARIO' }>
+    pedir: PedirRecordacao
+  }>
 }>
 
 function erroTemValidacao(
@@ -220,6 +240,15 @@ export async function criarAplicacao(
   await registrarRotasDeCategorias(aplicacao, {
     obterCatalogoDeCategorias,
   })
+  if (dependencias.autenticacao !== undefined) {
+    await registrarRotasDeAutenticacao(aplicacao, dependencias.autenticacao)
+  }
+  if (dependencias.eventosCore !== undefined) {
+    await registrarRotasCoreDeEventos(aplicacao, dependencias.eventosCore)
+  }
+  if (dependencias.recordacoes !== undefined) {
+    await registrarHttpDeRecordacoes(aplicacao, dependencias.recordacoes)
+  }
   if (dependencias.media !== undefined) {
     await registrarHttpDeMedia(aplicacao, dependencias.media)
   }
