@@ -20,6 +20,9 @@ export default function CabecalhoPublico({
       <MarcaEntrela />
 
       <nav className="site-header__actions" aria-label="Ações da conta">
+        <Link className="header-secondary-action" to="/descobrir">
+          Descobrir
+        </Link>
         {acaoSecundaria ? (
           <Link className="header-secondary-action" to={acaoSecundaria.destino}>
             {acaoSecundaria.rotulo}
